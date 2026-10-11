@@ -1,5 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
+    // 0. Google Sheets RSVP Integration
+    // ==========================================
+    // Paste your Google Apps Script Web App URL below to automatically collect RSVPs in Google Sheets/Excel:
+    const GOOGLE_SHEET_RSVP_URL = "";
+
+    // ==========================================
     // 1. Audio Control & Initial Welcome Overlay
     // ==========================================
     const audioOverlay = document.getElementById('audio-overlay');
@@ -204,18 +210,31 @@ document.addEventListener('DOMContentLoaded', () => {
         rsvpForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('guest-name').value.trim();
+            const phoneEl = document.getElementById('guest-phone');
+            const phone = phoneEl ? phoneEl.value.trim() : '';
             const pax = document.getElementById('pax-select').value;
             const wish = document.getElementById('guest-wish').value.trim();
 
             const responseData = {
                 name,
+                phone: phone || '-',
                 status: currentAttendanceStatus,
                 pax: currentAttendanceStatus === "HADIR" ? pax : "0",
-                wish,
-                timestamp: new Date().toISOString()
+                wish: wish || '-',
+                timestamp: new Date().toLocaleString('ms-MY', { timeZone: 'Asia/Kuala_Lumpur' })
             };
 
-            // Save to localStorage
+            // Send to Google Sheets (Excel real-time sync)
+            if (GOOGLE_SHEET_RSVP_URL) {
+                fetch(GOOGLE_SHEET_RSVP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(responseData)
+                }).catch(err => console.error('RSVP submission error:', err));
+            }
+
+            // Save to localStorage as local backup
             const savedResponses = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
             savedResponses.push(responseData);
             localStorage.setItem('wedding_rsvps', JSON.stringify(savedResponses));
@@ -292,6 +311,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (author && text) {
                 appendWishCard(author, text);
+
+                const wishData = {
+                    name: author,
+                    phone: '-',
+                    status: 'UCAPAN',
+                    pax: '-',
+                    wish: text,
+                    timestamp: new Date().toLocaleString('ms-MY', { timeZone: 'Asia/Kuala_Lumpur' })
+                };
+
+                // Send to Google Sheets (Excel real-time sync)
+                if (GOOGLE_SHEET_RSVP_URL) {
+                    fetch(GOOGLE_SHEET_RSVP_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(wishData)
+                    }).catch(err => console.error('Wish submission error:', err));
+                }
 
                 // Save to localStorage
                 const userWishes = JSON.parse(localStorage.getItem('wedding_custom_wishes') || '[]');
