@@ -1,444 +1,1076 @@
 <!DOCTYPE html>
-
 <html lang="ms">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>Walimatul Urus Nadzri &amp; Adibah</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="styles.css" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Walimatul Urus Nadzri & Adibah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<!-- Background Music -->
-<audio id="bg-music" loop="" preload="auto">
-<source src="assets/gambus-kelantan.mp3" type="audio/mpeg"/>
-</audio>
-<div class="mobile-container">
-<!-- ==========================================
+    <!-- Background Music -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="assets/gambus-kelantan.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="mobile-container">
+        
+        <!-- Floating Live Edit Control Bar -->
+        <aside class="live-edit-toolbar" id="edit-toolbar">
+            <div class="toolbar-pill">
+                <div class="toolbar-row-main">
+                    <div class="toolbar-mode-switch">
+                        <button type="button" class="toolbar-mode-btn" id="btn-mode-text" title="Text Mode: Click any text to edit spelling">
+                            <i class="fa-solid fa-i-cursor"></i> Text
+                        </button>
+                        <button type="button" class="toolbar-mode-btn active" id="btn-mode-lasso" title="Lasso Mode: Drag or Nudge text Up / Down">
+                            <i class="fa-solid fa-arrows-up-down"></i> Move ↕
+                        </button>
+                    </div>
+                    <div class="toolbar-actions">
+                        <button type="button" class="toolbar-btn btn-save" id="btn-save-edits" title="Save text & positions"><i class="fa-solid fa-check"></i> Save</button>
+                        <button type="button" class="toolbar-btn btn-reset" id="btn-reset-edits" title="Reset all to original"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                        <button type="button" class="toolbar-btn btn-dismiss" id="btn-dismiss-toolbar" title="Hide toolbar">&times;</button>
+                    </div>
+                </div>
+                <!-- Move Controls Row (active in Move ↕ mode) -->
+                <div class="toolbar-row-move" id="toolbar-move-controls">
+                    <div class="toolbar-group-select-wrapper">
+                        <select id="select-quick-group" class="toolbar-group-select" title="Choose a group to move">
+                            <option value="">▾ Pick Group...</option>
+                            <option value="hero-all-text">✨ Page 1: All Text Together</option>
+                            <option value="hero-title-group">💍 Page 1: Names (NADZRI & ADIBAH)</option>
+                            <option value="hero-details-group">📅 Page 1: Date & Venue</option>
+                            <option value="greet-block">📜 Page 1.5: Salam & Greetings</option>
+                            <option value="parents-block">👨‍👩‍👦 Page 1.5: Parents / Hosts</option>
+                            <option value="invitation-couple-block">👰 Page 1.5: Couple Names</option>
+                            <option value="event-meta-block">📍 Page 1.5: Tempat, Tarikh, Waktu</option>
+                            <option value="countdown-block">⏳ Page 2: Countdown Timer</option>
+                            <option value="wishes-block">💌 Page 2: Wishes & Doa</option>
+                            <option value="location-block">🗺️ Page 3: Location & Map</option>
+                            <option value="rsvp-header-block">📋 Page 4: RSVP Kehadiran</option>
+                            <option value="family-block">📞 Page 4: Family Contacts</option>
+                        </select>
+                    </div>
+                    <div class="toolbar-nudge-group">
+                        <button type="button" class="toolbar-btn btn-nudge" id="btn-toolbar-up-10" title="Move Up 10px"><i class="fa-solid fa-angles-up"></i></button>
+                        <button type="button" class="toolbar-btn btn-nudge" id="btn-toolbar-up" title="Move Up 2px"><i class="fa-solid fa-chevron-up"></i> Up</button>
+                        <span class="toolbar-y-readout" id="toolbar-y-readout">0px</span>
+                        <button type="button" class="toolbar-btn btn-nudge" id="btn-toolbar-down" title="Move Down 2px"><i class="fa-solid fa-chevron-down"></i> Dn</button>
+                        <button type="button" class="toolbar-btn btn-nudge" id="btn-toolbar-down-10" title="Move Down 10px"><i class="fa-solid fa-angles-down"></i></button>
+                        <button type="button" class="toolbar-btn btn-nudge btn-reset-pos" id="btn-toolbar-reset-pos" title="Reset position to 0px">0px</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <button type="button" class="edit-reopen-badge" id="btn-reopen-toolbar" title="Open Edit / Lasso Mode"><i class="fa-solid fa-pen"></i></button>
+
+        <!-- Lasso Selection Marquee Box -->
+        <div class="lasso-selection-box" id="lasso-box"></div>
+
+        <!-- Floating Lasso / Y-Axis Move Controller -->
+        <aside class="lasso-move-controller" id="lasso-controller" style="display: none;">
+            <div class="lasso-controller-pill">
+                <span class="lasso-controller-label"><i class="fa-solid fa-arrows-up-down"></i> Move (Y-Axis)</span>
+                <div class="lasso-nudge-btns">
+                    <button type="button" class="lasso-btn" id="btn-lasso-up-10" title="Move Up 10px"><i class="fa-solid fa-angles-up"></i> Up 10</button>
+                    <button type="button" class="lasso-btn" id="btn-lasso-up-2" title="Nudge Up 2px"><i class="fa-solid fa-chevron-up"></i> +2</button>
+                    <span class="lasso-badge" id="lasso-y-readout">0px</span>
+                    <button type="button" class="lasso-btn" id="btn-lasso-down-2" title="Nudge Down 2px"><i class="fa-solid fa-chevron-down"></i> -2</button>
+                    <button type="button" class="lasso-btn" id="btn-lasso-down-10" title="Move Down 10px"><i class="fa-solid fa-angles-down"></i> Down 10</button>
+                </div>
+                <div class="lasso-drag-handle" id="lasso-drag-handle" title="Click & Drag Up/Down">
+                    <i class="fa-solid fa-grip-vertical"></i> Drag ↕
+                </div>
+                <button type="button" class="lasso-btn btn-reset-pos" id="btn-lasso-reset-pos" title="Reset Position to 0px"><i class="fa-solid fa-rotate-left"></i> 0px</button>
+                <button type="button" class="lasso-btn btn-close-lasso" id="btn-lasso-close" title="Deselect">&times;</button>
+            </div>
+        </aside>
+
+        <!-- ==========================================
              SCREEN 1: THE INVITATION CARD (HERO)
              ========================================== -->
-<section class="screen-page hero-page" id="screen-hero">
-<!-- Top App Bar matching screen.png -->
-<header class="top-nav-bar movable-item" data-move-id="top-nav-bar">
-<span class="brand-monogram" data-key="nav-monogram">NADZRI &amp; ADIBAH</span>
-<button aria-label="Menu Navigasi" class="menu-icon-btn" id="menu-toggle-btn">
-<i class="fa-solid fa-bars"></i>
-</button>
-</header>
-<!-- Main Invitation Framed Card with exact floral & vintage border -->
-<div class="invitation-card-wrapper">
-<div class="invitation-card">
-<div class="card-content">
-<!-- Entire 1st Page Text Cluster (tight, close together, vertically centered) -->
-<div class="hero-center-cluster movable-group" data-move-id="hero-all-text" style="transform: translateY(-15px);">
-<!-- Upper Block: Title & Couple Names (close together) -->
-<div class="hero-title-group movable-group" data-move-id="hero-title-group" style="transform: translateY(-53px);">
-<p class="label-md letter-tracking-wide text-primary hero-top-label movable-item" data-key="hero-label" data-move-id="hero-top-label" style="transform: translateY(-16px);">WALIMATUL URUS</p>
-<div class="couple-names movable-group" data-move-id="couple-names">
-<h1 class="display-lg font-serif movable-item" data-key="groom-name" data-move-id="groom-name">NADZRI</h1>
-<span class="ampersand-sign font-serif movable-item" data-key="ampersand" data-move-id="ampersand">&amp;</span>
-<h1 class="display-lg font-serif movable-item" data-key="bride-name" data-move-id="bride-name">ADIBAH</h1>
-</div>
-</div>
-<div class="hero-fine-divider movable-item" data-move-id="hero-fine-divider" style="transform: translateY(-30px);"></div>
-<!-- Lower Block: Day, Date & Venue (close together) -->
-<div class="hero-details-group movable-group" data-move-id="hero-details-group">
-<p class="label-md letter-tracking-md text-primary hero-day-label movable-item" data-key="hero-day" data-move-id="hero-day-label">AHAD</p>
-<div class="wedding-date-row movable-item" data-move-id="wedding-date-row">
-<span class="date-digit" data-key="date-day">24</span>
-<span class="date-sep">|</span>
-<span class="date-digit" data-key="date-month">01</span>
-<span class="date-sep">|</span>
-<span class="date-digit" data-key="date-year">2027</span>
-</div>
-<div class="venue-info movable-item" data-move-id="venue-info" style="transform: translateY(38px);">
-<p class="venue-title bold-text font-sans" data-key="venue-name">Dewan Tengku Zara</p>
-<p class="venue-sub font-sans" data-key="venue-location">Shah Alam</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- ==========================================
+        <section id="screen-hero" class="screen-page hero-page">
+            <!-- Top App Bar matching screen.png -->
+            <header class="top-nav-bar movable-item" data-move-id="top-nav-bar">
+                <span class="brand-monogram" contenteditable="true" spellcheck="false" data-key="nav-monogram">NADZRI & ADIBAH</span>
+                <button class="menu-icon-btn" id="menu-toggle-btn" aria-label="Menu Navigasi">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </header>
+
+            <!-- Main Invitation Framed Card with exact floral & vintage border -->
+            <div class="invitation-card-wrapper">
+                <div class="invitation-card">
+                    <div class="card-content">
+                        <!-- Entire 1st Page Text Cluster (tight, close together, vertically centered) -->
+                        <div class="hero-center-cluster movable-group" data-move-id="hero-all-text" style="transform: translateY(-15px);">
+                            <!-- Upper Block: Title & Couple Names (close together) -->
+                            <div class="hero-title-group movable-group" data-move-id="hero-title-group" style="transform: translateY(-53px);">
+                                <p class="label-md letter-tracking-wide text-primary hero-top-label movable-item" contenteditable="true" spellcheck="false" data-key="hero-label" data-move-id="hero-top-label" style="transform: translateY(-16px);">WALIMATUL URUS</p>
+                                
+                                <div class="couple-names movable-group" data-move-id="couple-names">
+                                    <h1 class="display-lg font-serif movable-item" contenteditable="true" spellcheck="false" data-key="groom-name" data-move-id="groom-name">NADZRI</h1>
+                                    <span class="ampersand-sign font-serif movable-item" contenteditable="true" spellcheck="false" data-key="ampersand" data-move-id="ampersand">&</span>
+                                    <h1 class="display-lg font-serif movable-item" contenteditable="true" spellcheck="false" data-key="bride-name" data-move-id="bride-name">ADIBAH</h1>
+                                </div>
+                            </div>
+                            
+                            <div class="hero-fine-divider movable-item" data-move-id="hero-fine-divider" style="transform: translateY(-30px);"></div>
+                            
+                            <!-- Lower Block: Day, Date & Venue (close together) -->
+                            <div class="hero-details-group movable-group" data-move-id="hero-details-group">
+                                <p class="label-md letter-tracking-md text-primary hero-day-label movable-item" contenteditable="true" spellcheck="false" data-key="hero-day" data-move-id="hero-day-label">AHAD</p>
+                                
+                                <div class="wedding-date-row movable-item" data-move-id="wedding-date-row">
+                                    <span class="date-digit" contenteditable="true" spellcheck="false" data-key="date-day">24</span>
+                                    <span class="date-sep">|</span>
+                                    <span class="date-digit" contenteditable="true" spellcheck="false" data-key="date-month">01</span>
+                                    <span class="date-sep">|</span>
+                                    <span class="date-digit" contenteditable="true" spellcheck="false" data-key="date-year">2027</span>
+                                </div>
+                                
+                                <div class="venue-info movable-item" data-move-id="venue-info" style="transform: translateY(38px);">
+                                    <p class="venue-title bold-text font-sans" contenteditable="true" spellcheck="false" data-key="venue-name">Dewan Tengku Zara</p>
+                                    <p class="venue-sub font-sans" contenteditable="true" spellcheck="false" data-key="venue-location">Shah Alam</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
              SECTION 1.5: INVITATION GREETINGS & EVENT DETAILS
              (Between Screen 1 and Screen 2)
              ========================================== -->
-<section class="screen-page content-page invitation-details-page" id="screen-invitation-details">
-<div class="page-inner-content">
-<div class="invitation-text-container">
-<!-- Salam & Greetings -->
-<div class="greet-block movable-group" data-move-id="greet-block">
-<p class="greet-arabic font-serif movable-item" data-key="greet-salam" data-move-id="greet-salam">Assalamu'alaikum W.B.T &amp;</p>
-<p class="greet-malay font-serif movable-item" data-key="greet-sejahtera" data-move-id="greet-sejahtera">Salam Sejahtera</p>
-</div>
-<div class="greet-divider-line movable-item" data-move-id="greet-divider-1"></div>
-<!-- Parents / Hosts -->
-<div class="parents-block movable-group" data-move-id="parents-block">
-<h3 class="parent-name font-serif movable-item" data-key="parent-father" data-move-id="parent-father">Jaigani Jaafar</h3>
-<span class="parent-amp font-serif movable-item" data-move-id="parent-amp">&amp;</span>
-<h3 class="parent-name font-serif movable-item" data-key="parent-mother" data-move-id="parent-mother">Wan Mastura</h3>
-</div>
-<!-- Jemputan Verse -->
-<div class="invitation-body-block movable-group" data-move-id="invitation-body-block">
-<p class="body-sm text-primary movable-item" data-key="invite-verse-1" data-move-id="invite-verse-1">Dengan penuh kesyukuran, kami mempersilakan</p>
-<p class="titles-honorific font-serif movable-item" data-key="invite-titles" data-move-id="invite-titles">Dato' | Datin | Tuan | Puan | Encik | Cik</p>
-<p class="body-sm text-primary movable-item" data-key="invite-verse-2" data-move-id="invite-verse-2">seisi keluarga hadir ke majlis perkahwinan anakanda kami</p>
-</div>
-<!-- Bride & Groom -->
-<div class="invitation-couple-block movable-group" data-move-id="invitation-couple-block">
-<h2 class="couple-name-md font-serif movable-item" data-key="invite-groom" data-move-id="invite-groom">Muhammad Nadzri bin Jaigani</h2>
-<span class="couple-amp font-serif movable-item" data-move-id="invite-amp">&amp;</span>
-<h2 class="couple-name-md font-serif movable-item" data-key="invite-bride" data-move-id="invite-bride">Adibah Wafaa bt Mohamed Noordeen</h2>
-</div>
-<div class="greet-divider-line movable-item" data-move-id="greet-divider-2"></div>
-<!-- Event Meta Details: Tempat, Tarikh, Waktu -->
-<div class="event-meta-block movable-group" data-move-id="event-meta-block">
-<!-- Tempat -->
-<div class="meta-item movable-item" data-move-id="meta-tempat">
-<p class="meta-label" data-key="meta-label-tempat">TEMPAT</p>
-<p class="meta-value-title bold-text font-serif" data-key="meta-venue-name">Dewan Tengku Zara @ Shah Alam</p>
-<p class="meta-value-sub" data-key="meta-venue-address">15, Jalan 15/23, Seksyen 15, 40200 Shah Alam, Selangor</p>
-</div>
-<!-- Tarikh -->
-<div class="meta-item movable-item" data-move-id="meta-tarikh">
-<p class="meta-label" data-key="meta-label-tarikh">TARIKH</p>
-<p class="meta-value-title font-serif" data-key="meta-tarikh-val">Ahad, 24 Januari 2027</p>
-</div>
-<!-- Waktu -->
-<div class="meta-item movable-item" data-move-id="meta-waktu">
-<p class="meta-label" data-key="meta-label-waktu">WAKTU</p>
-<p class="meta-value-title" data-key="meta-waktu-val">11:00 pagi - 4:00 petang</p>
-</div>
-</div>
-</div>
-</div>
+        <section id="screen-invitation-details" class="screen-page content-page invitation-details-page">
+            <div class="page-inner-content">
+                <div class="invitation-text-container">
+                    
+                    <!-- Salam & Greetings -->
+                    <div class="greet-block movable-group" data-move-id="greet-block">
+                        <p class="greet-arabic font-serif movable-item" contenteditable="true" spellcheck="false" data-key="greet-salam" data-move-id="greet-salam">Assalamu'alaikum W.B.T &</p>
+                        <p class="greet-malay font-serif movable-item" contenteditable="true" spellcheck="false" data-key="greet-sejahtera" data-move-id="greet-sejahtera">Salam Sejahtera</p>
+                    </div>
 
-</section>
-<!-- ==========================================
+                    <div class="greet-divider-line movable-item" data-move-id="greet-divider-1"></div>
+
+                    <!-- Parents / Hosts -->
+                    <div class="parents-block movable-group" data-move-id="parents-block">
+                        <h3 class="parent-name font-serif movable-item" contenteditable="true" spellcheck="false" data-key="parent-father" data-move-id="parent-father">Jaigani Jaafar</h3>
+                        <span class="parent-amp font-serif movable-item" contenteditable="true" spellcheck="false" data-move-id="parent-amp">&</span>
+                        <h3 class="parent-name font-serif movable-item" contenteditable="true" spellcheck="false" data-key="parent-mother" data-move-id="parent-mother">Wan Mastura</h3>
+                    </div>
+
+                    <!-- Jemputan Verse -->
+                    <div class="invitation-body-block movable-group" data-move-id="invitation-body-block">
+                        <p class="body-sm text-primary movable-item" contenteditable="true" spellcheck="false" data-key="invite-verse-1" data-move-id="invite-verse-1">Dengan penuh kesyukuran, kami mempersilakan</p>
+                        <p class="titles-honorific font-serif movable-item" contenteditable="true" spellcheck="false" data-key="invite-titles" data-move-id="invite-titles">Dato' | Datin | Tuan | Puan | Encik | Cik</p>
+                        <p class="body-sm text-primary movable-item" contenteditable="true" spellcheck="false" data-key="invite-verse-2" data-move-id="invite-verse-2">seisi keluarga hadir ke majlis perkahwinan anakanda kami</p>
+                    </div>
+
+                    <!-- Bride & Groom -->
+                    <div class="invitation-couple-block movable-group" data-move-id="invitation-couple-block">
+                        <h2 class="couple-name-md font-serif movable-item" contenteditable="true" spellcheck="false" data-key="invite-groom" data-move-id="invite-groom">Muhammad Nadzri bin Jaigani</h2>
+                        <span class="couple-amp font-serif movable-item" contenteditable="true" spellcheck="false" data-move-id="invite-amp">&</span>
+                        <h2 class="couple-name-md font-serif movable-item" contenteditable="true" spellcheck="false" data-key="invite-bride" data-move-id="invite-bride">Adibah Wafaa bt Mohamed Noordeen</h2>
+                    </div>
+
+                    <div class="greet-divider-line movable-item" data-move-id="greet-divider-2"></div>
+
+                    <!-- Event Meta Details: Tempat, Tarikh, Waktu -->
+                    <div class="event-meta-block movable-group" data-move-id="event-meta-block">
+                        
+                        <!-- Tempat -->
+                        <div class="meta-item movable-item" data-move-id="meta-tempat">
+                            <p class="meta-label" contenteditable="true" spellcheck="false" data-key="meta-label-tempat">TEMPAT</p>
+                            <p class="meta-value-title bold-text font-serif" contenteditable="true" spellcheck="false" data-key="meta-venue-name">Dewan Tengku Zara @ Shah Alam</p>
+                            <p class="meta-value-sub" contenteditable="true" spellcheck="false" data-key="meta-venue-address">15, Jalan 15/23, Seksyen 15, 40200 Shah Alam, Selangor</p>
+                        </div>
+
+                        <!-- Tarikh -->
+                        <div class="meta-item movable-item" data-move-id="meta-tarikh">
+                            <p class="meta-label" contenteditable="true" spellcheck="false" data-key="meta-label-tarikh">TARIKH</p>
+                            <p class="meta-value-title font-serif" contenteditable="true" spellcheck="false" data-key="meta-tarikh-val">Ahad, 24 Januari 2027</p>
+                        </div>
+
+                        <!-- Waktu -->
+                        <div class="meta-item movable-item" data-move-id="meta-waktu">
+                            <p class="meta-label" contenteditable="true" spellcheck="false" data-key="meta-label-waktu">WAKTU</p>
+                            <p class="meta-value-title" contenteditable="true" spellcheck="false" data-key="meta-waktu-val">11:00 pagi - 4:00 petang</p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- Interactive Drag Resizer Handle for Section 1.5 -->
+            <div class="section-resizer-bar" data-var="--s15-min-height" title="Tarik ke bawah atau ke atas untuk ubah saiz latar belakang">
+                <div class="resizer-pill"><i class="fa-solid fa-arrows-up-down"></i> Tarik Ubah Tinggi</div>
+            </div>
+        </section>
+
+        <!-- ==========================================
              SCREEN 2: MENGHITUNG HARI & UCAPAN & DOA
              ========================================== -->
-<section class="screen-page content-page" id="screen-countdown">
-<div class="page-inner-content">
-<!-- Countdown Section -->
-<div class="section-block countdown-block movable-group" data-move-id="countdown-block">
-<p class="label-md center-text letter-tracking-lg margin-bottom-sm text-primary movable-item" data-key="countdown-label" data-move-id="countdown-label">MENGHITUNG HARI</p>
-<div class="timer-grid movable-item" data-move-id="timer-grid">
-<div class="timer-box">
-<span class="timer-number" data-key="timer-days" id="days">105</span>
-<span class="timer-label">HARI</span>
-</div>
-<div class="timer-box">
-<span class="timer-number" data-key="timer-hours" id="hours">09</span>
-<span class="timer-label">JAM</span>
-</div>
-<div class="timer-box">
-<span class="timer-number" data-key="timer-minutes" id="minutes">52</span>
-<span class="timer-label">MINIT</span>
-</div>
-<div class="timer-box">
-<span class="timer-number" data-key="timer-seconds" id="seconds">15</span>
-<span class="timer-label">SAAT</span>
-</div>
-</div>
-</div>
-<!-- Spacer revealing the authentic botanical gold branch divider in user background -->
-<div class="middle-divider-spacer movable-item" data-move-id="middle-divider-spacer"></div>
-<!-- Wishes Section matching screen.png -->
-<div class="section-block wishes-block movable-group" data-move-id="wishes-block">
-<div class="section-title-wrapper movable-item" data-move-id="wishes-title-wrapper">
-<div class="sparkle-star-icon">✦</div>
-<h2 class="headline-md font-serif" data-key="wishes-title">Ucapan &amp; Doa</h2>
-</div>
-<div class="wishes-list movable-item" data-move-id="wishes-container" id="wishes-container">
-<!-- Wish Card 1 -->
-<div class="wish-card movable-item" data-move-id="wish-card-1">
-<p class="body-md italic-text quote-text">"Tahniah Nadzri dan Adibah! Semoga ikatan yang terbina kekal hingga ke Jannah. Selamat melayari bahtera rumah tangga."</p>
-<div class="wish-author-row">
-<div class="avatar-badge">AS</div>
-<span class="label-md bold-text author-name">AHMAD SALMAN</span>
-</div>
-</div>
-<!-- Wish Card 2 -->
-<div class="wish-card movable-item" data-move-id="wish-card-2">
-<p class="body-md italic-text quote-text">"Selamat Pengantin Baru. Semoga bahagia selalu buat kedua mempelai!"</p>
-<div class="wish-author-row">
-<div class="avatar-badge">NF</div>
-<span class="label-md bold-text author-name">NURUL FARHANA</span>
-</div>
-</div>
-<!-- Wish Card 3 -->
-<div class="wish-card movable-item" data-move-id="wish-card-3">
-<p class="body-md italic-text quote-text">"Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fil khair."</p>
-<div class="wish-author-row">
-<div class="avatar-badge">MI</div>
-<span class="label-md bold-text author-name">MOHD IKHWAN</span>
-</div>
-</div>
-<!-- Wish Card 4 -->
-<div class="wish-card movable-item" data-move-id="wish-card-4">
-<p class="body-md italic-text quote-text">"Semoga mahligai yang dibina sentiasa diberkati Allah SWT, dipenuhi sakinah, mawaddah wa rahmah. Tahniah!"</p>
-<div class="wish-author-row">
-<div class="avatar-badge">SS</div>
-<span class="label-md bold-text author-name">SITI SARAH</span>
-</div>
-</div>
-</div>
-<!-- Add Wish Trigger Button -->
-<button class="btn btn-secondary full-width margin-top-md movable-item" data-move-id="btn-trigger-wish-modal" id="btn-trigger-wish-modal" type="button">
-<i class="fa-solid fa-feather-pointed"></i> TITIPKAN UCAPAN
-                    </button>
-</div>
-</div>
+        <section id="screen-countdown" class="screen-page content-page">
+            <div class="page-inner-content">
+                <!-- Countdown Section -->
+                <div class="section-block countdown-block movable-group" data-move-id="countdown-block">
+                    <p class="label-md center-text letter-tracking-lg margin-bottom-sm text-primary movable-item" contenteditable="true" spellcheck="false" data-key="countdown-label" data-move-id="countdown-label">MENGHITUNG HARI</p>
+                    
+                    <div class="timer-grid movable-item" data-move-id="timer-grid">
+                        <div class="timer-box">
+                            <span id="days" class="timer-number" contenteditable="true" spellcheck="false" data-key="timer-days">105</span>
+                            <span class="timer-label" contenteditable="true" spellcheck="false">HARI</span>
+                        </div>
+                        <div class="timer-box">
+                            <span id="hours" class="timer-number" contenteditable="true" spellcheck="false" data-key="timer-hours">09</span>
+                            <span class="timer-label" contenteditable="true" spellcheck="false">JAM</span>
+                        </div>
+                        <div class="timer-box">
+                            <span id="minutes" class="timer-number" contenteditable="true" spellcheck="false" data-key="timer-minutes">52</span>
+                            <span class="timer-label" contenteditable="true" spellcheck="false">MINIT</span>
+                        </div>
+                        <div class="timer-box">
+                            <span id="seconds" class="timer-number" contenteditable="true" spellcheck="false" data-key="timer-seconds">15</span>
+                            <span class="timer-label" contenteditable="true" spellcheck="false">SAAT</span>
+                        </div>
+                    </div>
+                </div>
 
-</section>
-<!-- ==========================================
+                <!-- Spacer revealing the authentic botanical gold branch divider in user background -->
+                <div class="middle-divider-spacer movable-item" data-move-id="middle-divider-spacer"></div>
+
+                <!-- Wishes Section matching screen.png -->
+                <div class="section-block wishes-block movable-group" data-move-id="wishes-block">
+                    <div class="section-title-wrapper movable-item" data-move-id="wishes-title-wrapper">
+                        <div class="sparkle-star-icon">✦</div>
+                        <h2 class="headline-md font-serif" contenteditable="true" spellcheck="false" data-key="wishes-title">Ucapan & Doa</h2>
+                    </div>
+
+                    <div class="wishes-list movable-item" id="wishes-container" data-move-id="wishes-container">
+                        <!-- Wish Card 1 -->
+                        <div class="wish-card movable-item" data-move-id="wish-card-1">
+                            <p class="body-md italic-text quote-text" contenteditable="true" spellcheck="false">"Tahniah Nadzri dan Adibah! Semoga ikatan yang terbina kekal hingga ke Jannah. Selamat melayari bahtera rumah tangga."</p>
+                            <div class="wish-author-row">
+                                <div class="avatar-badge">AS</div>
+                                <span class="label-md bold-text author-name" contenteditable="true" spellcheck="false">AHMAD SALMAN</span>
+                            </div>
+                        </div>
+
+                        <!-- Wish Card 2 -->
+                        <div class="wish-card movable-item" data-move-id="wish-card-2">
+                            <p class="body-md italic-text quote-text" contenteditable="true" spellcheck="false">"Selamat Pengantin Baru. Semoga bahagia selalu buat kedua mempelai!"</p>
+                            <div class="wish-author-row">
+                                <div class="avatar-badge">NF</div>
+                                <span class="label-md bold-text author-name" contenteditable="true" spellcheck="false">NURUL FARHANA</span>
+                            </div>
+                        </div>
+
+                        <!-- Wish Card 3 -->
+                        <div class="wish-card movable-item" data-move-id="wish-card-3">
+                            <p class="body-md italic-text quote-text" contenteditable="true" spellcheck="false">"Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fil khair."</p>
+                            <div class="wish-author-row">
+                                <div class="avatar-badge">MI</div>
+                                <span class="label-md bold-text author-name" contenteditable="true" spellcheck="false">MOHD IKHWAN</span>
+                            </div>
+                        </div>
+
+                        <!-- Wish Card 4 -->
+                        <div class="wish-card movable-item" data-move-id="wish-card-4">
+                            <p class="body-md italic-text quote-text" contenteditable="true" spellcheck="false">"Semoga mahligai yang dibina sentiasa diberkati Allah SWT, dipenuhi sakinah, mawaddah wa rahmah. Tahniah!"</p>
+                            <div class="wish-author-row">
+                                <div class="avatar-badge">SS</div>
+                                <span class="label-md bold-text author-name" contenteditable="true" spellcheck="false">SITI SARAH</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Wish Trigger Button -->
+                    <button type="button" class="btn btn-secondary full-width margin-top-md movable-item" id="btn-trigger-wish-modal" data-move-id="btn-trigger-wish-modal">
+                        <i class="fa-solid fa-feather-pointed"></i> TITIPKAN UCAPAN
+                    </button>
+                </div>
+            </div>
+            <!-- Interactive Drag Resizer Handle for Section 2 -->
+            <div class="section-resizer-bar" data-var="--s2-min-height" title="Tarik ke bawah atau ke atas untuk ubah saiz latar belakang">
+                <div class="resizer-pill"><i class="fa-solid fa-arrows-up-down"></i> Tarik Ubah Tinggi</div>
+            </div>
+        </section>
+
+        <!-- ==========================================
              SCREEN 3: LOKASI MAJLIS
              ========================================== -->
-<section class="screen-page content-page" id="screen-location">
-<div class="page-inner-content">
-<div class="section-block location-block movable-group" data-move-id="location-block">
-<div class="location-header movable-item" data-move-id="location-header">
-<i class="fa-solid fa-location-dot location-pin"></i>
-<h2 class="headline-md font-serif" data-key="location-title">Lokasi Majlis</h2>
-<h3 class="venue-name-highlight font-serif" data-key="location-hall">Dewan Tengku Zara</h3>
-<p class="body-sm text-primary-muted font-sans location-full-address" data-key="location-address">15, Jalan 15/23, Seksyen 15, 40200 Shah Alam, Selangor</p>
-</div>
-<!-- Embedded Google Maps Card of the Location -->
-<div class="map-card-container movable-item" data-move-id="perimeter-map-card">
-<iframe allowfullscreen="" height="240" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Dewan+Tengku+Zara+Seksyen+15+Shah+Alam&amp;t=&amp;z=15&amp;ie=UTF8&amp;iwloc=&amp;output=embed" style="border:0;" title="Peta Lokasi Google Maps Dewan Tengku Zara" width="100%">
-</iframe>
-</div>
-<!-- Map Navigation Buttons -->
-<div class="map-buttons-row movable-item" data-move-id="map-buttons-row">
-<a class="btn btn-secondary map-action-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Dewan+Tengku+Zara+Shah+Alam" id="btn-location-gmaps" rel="noopener noreferrer" target="_blank">
-<i class="fa-solid fa-location-dot"></i> <span>GOOGLE MAPS</span>
-</a>
-<a class="btn btn-secondary map-action-btn" href="https://waze.com/ul?q=Dewan+Tengku+Zara+Shah+Alam" id="btn-location-waze" rel="noopener noreferrer" target="_blank">
-<i class="fa-brands fa-waze"></i> <span>WAZE</span>
-</a>
-</div>
-</div>
-</div>
+        <section id="screen-location" class="screen-page content-page">
+            <div class="page-inner-content">
+                <div class="section-block location-block movable-group" data-move-id="location-block">
+                    <div class="location-header movable-item" data-move-id="location-header">
+                        <i class="fa-solid fa-location-dot location-pin"></i>
+                        <h2 class="headline-md font-serif" contenteditable="true" spellcheck="false" data-key="location-title">Lokasi Majlis</h2>
+                        <h3 class="venue-name-highlight font-serif" contenteditable="true" spellcheck="false" data-key="location-hall">Dewan Tengku Zara</h3>
+                        <p class="body-sm text-primary-muted font-sans location-full-address" contenteditable="true" spellcheck="false" data-key="location-address">15, Jalan 15/23, Seksyen 15, 40200 Shah Alam, Selangor</p>
+                    </div>
 
-</section>
-<!-- ==========================================
+                    <!-- Embedded Google Maps Card of the Location -->
+                    <div class="map-card-container movable-item" data-move-id="perimeter-map-card">
+                        <iframe 
+                            src="https://maps.google.com/maps?q=Dewan+Tengku+Zara+Seksyen+15+Shah+Alam&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                            width="100%" 
+                            height="240" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Peta Lokasi Google Maps Dewan Tengku Zara">
+                        </iframe>
+                    </div>
+
+                    <!-- Map Navigation Buttons -->
+                    <div class="map-buttons-row movable-item" data-move-id="map-buttons-row">
+                        <a href="https://www.google.com/maps/search/?api=1&query=Dewan+Tengku+Zara+Shah+Alam" target="_blank" rel="noopener noreferrer" class="btn btn-secondary map-action-btn" id="btn-location-gmaps">
+                            <i class="fa-solid fa-location-dot"></i> <span contenteditable="true" spellcheck="false">GOOGLE MAPS</span>
+                        </a>
+                        <a href="https://waze.com/ul?q=Dewan+Tengku+Zara+Shah+Alam" target="_blank" rel="noopener noreferrer" class="btn btn-secondary map-action-btn" id="btn-location-waze">
+                            <i class="fa-brands fa-waze"></i> <span contenteditable="true" spellcheck="false">WAZE</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Interactive Drag Resizer Handle for Section 3 -->
+            <div class="section-resizer-bar" data-var="--s3-min-height" title="Tarik ke bawah atau ke atas untuk ubah saiz latar belakang">
+                <div class="resizer-pill"><i class="fa-solid fa-arrows-up-down"></i> Tarik Ubah Tinggi</div>
+            </div>
+        </section>
+
+        <!-- ==========================================
              SCREEN 4: KEHADIRAN & HUBUNGI KELUARGA + FOOTER
              ========================================== -->
-<section class="screen-page content-page" id="screen-rsvp">
-<div class="page-inner-content">
-<!-- Kehadiran & Hubungi Header -->
-<div class="section-block rsvp-header-block movable-group" data-move-id="rsvp-header-block">
-<h2 class="headline-md font-serif" data-key="rsvp-title">Kehadiran &amp; Hubungi</h2>
-<p class="body-md text-primary-muted center-text" data-key="rsvp-deadline">Sila maklumkan kehadiran anda sebelum 15 Januari 2027</p>
-<!-- Hadir / Tidak Hadir Buttons -->
-<div class="rsvp-choice-buttons">
-<button class="btn btn-primary full-width" id="btn-rsvp-open-hadir" type="button">HADIR</button>
-<button class="btn btn-ghost full-width" id="btn-rsvp-open-tidak" type="button">TIDAK HADIR</button>
-</div>
-</div>
-<!-- Hubungi Keluarga Section matching screen.png Screen 4 -->
-<div class="section-block family-block movable-group" data-move-id="family-block">
-<p class="label-md center-text letter-tracking-lg margin-bottom-md text-primary" data-key="family-heading">HUBUNGI KELUARGA</p>
-<div class="family-cards-list">
-<!-- Contact 1: Bapa -->
-<div class="family-card movable-item" data-move-id="family-card-1">
-<div class="family-info">
-<p class="family-role-name">BAPA (EN. JAIGANI)</p>
-<p class="family-phone-number">012-345 6789</p>
-</div>
-<div class="family-action-buttons">
-<a aria-label="Telefon Bapa" class="icon-circle-btn" href="tel:0123456789">
-<i class="fa-solid fa-phone"></i>
-</a>
-<a aria-label="WhatsApp Bapa" class="icon-circle-btn whatsapp-btn" href="https://wa.me/60123456789" rel="noopener noreferrer" target="_blank">
-<i class="fa-brands fa-whatsapp"></i>
-</a>
-</div>
-</div>
-<!-- Contact 2: Ibu -->
-<div class="family-card movable-item" data-move-id="family-card-2">
-<div class="family-info">
-<p class="family-role-name">IBU (PN. MASTURA)</p>
-<p class="family-phone-number">013-987 6543</p>
-</div>
-<div class="family-action-buttons">
-<a aria-label="Telefon Ibu" class="icon-circle-btn" href="tel:0139876543">
-<i class="fa-solid fa-phone"></i>
-</a>
-<a aria-label="WhatsApp Ibu" class="icon-circle-btn whatsapp-btn" href="https://wa.me/60139876543" rel="noopener noreferrer" target="_blank">
-<i class="fa-brands fa-whatsapp"></i>
-</a>
-</div>
-</div>
-<!-- Contact 3: Adik -->
-<div class="family-card movable-item" data-move-id="family-card-3">
-<div class="family-info">
-<p class="family-role-name">KAKAK (NAJWA)</p>
-<p class="family-phone-number">019-222 3344</p>
-</div>
-<div class="family-action-buttons">
-<a aria-label="Telefon Adik" class="icon-circle-btn" href="tel:0192223344">
-<i class="fa-solid fa-phone"></i>
-</a>
-<a aria-label="WhatsApp Adik" class="icon-circle-btn whatsapp-btn" href="https://wa.me/60192223344" rel="noopener noreferrer" target="_blank">
-<i class="fa-brands fa-whatsapp"></i>
-</a>
-</div>
-</div>
-</div>
-</div>
-</div>
+        <section id="screen-rsvp" class="screen-page content-page">
+            <div class="page-inner-content">
+                <!-- Kehadiran & Hubungi Header -->
+                <div class="section-block rsvp-header-block movable-group" data-move-id="rsvp-header-block">
+                    <h2 class="headline-md font-serif" contenteditable="true" spellcheck="false" data-key="rsvp-title">Kehadiran & Hubungi</h2>
+                    <p class="body-md text-primary-muted center-text" contenteditable="true" spellcheck="false" data-key="rsvp-deadline">Sila maklumkan kehadiran anda sebelum 15 Januari 2027</p>
 
-</section>
-<!-- Deep Navy Site Footer Section (100% full width until the right and left) -->
-<footer class="site-royal-footer-card">
-<div class="footer-card-content movable-item" data-move-id="footer-card-content">
-<h2 class="footer-monogram font-serif" data-key="footer-monogram">N &amp; A</h2>
-<p class="footer-tagline" data-key="footer-tagline">SELAMAT PENGANTIN BARU</p>
-</div>
-</footer>
-<!-- Spacer for fixed bottom bar -->
-<div class="bottom-nav-spacer"></div>
-<!-- ==========================================
+                    <!-- Hadir / Tidak Hadir Buttons -->
+                    <div class="rsvp-choice-buttons">
+                        <button type="button" class="btn btn-primary full-width" id="btn-rsvp-open-hadir" contenteditable="true" spellcheck="false">HADIR</button>
+                        <button type="button" class="btn btn-ghost full-width" id="btn-rsvp-open-tidak" contenteditable="true" spellcheck="false">TIDAK HADIR</button>
+                    </div>
+                </div>
+
+                <!-- Hubungi Keluarga Section matching screen.png Screen 4 -->
+                <div class="section-block family-block movable-group" data-move-id="family-block">
+                    <p class="label-md center-text letter-tracking-lg margin-bottom-md text-primary" contenteditable="true" spellcheck="false" data-key="family-heading">HUBUNGI KELUARGA</p>
+
+                    <div class="family-cards-list">
+                        <!-- Contact 1: Bapa -->
+                        <div class="family-card movable-item" data-move-id="family-card-1">
+                            <div class="family-info">
+                                <p class="family-role-name" contenteditable="true" spellcheck="false">BAPA (EN. JAIGANI)</p>
+                                <p class="family-phone-number" contenteditable="true" spellcheck="false">012-345 6789</p>
+                            </div>
+                            <div class="family-action-buttons">
+                                <a href="tel:0123456789" class="icon-circle-btn" aria-label="Telefon Bapa">
+                                    <i class="fa-solid fa-phone"></i>
+                                </a>
+                                <a href="https://wa.me/60123456789" target="_blank" rel="noopener noreferrer" class="icon-circle-btn whatsapp-btn" aria-label="WhatsApp Bapa">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Contact 2: Ibu -->
+                        <div class="family-card movable-item" data-move-id="family-card-2">
+                            <div class="family-info">
+                                <p class="family-role-name" contenteditable="true" spellcheck="false">IBU (PN. MASTURA)</p>
+                                <p class="family-phone-number" contenteditable="true" spellcheck="false">013-987 6543</p>
+                            </div>
+                            <div class="family-action-buttons">
+                                <a href="tel:0139876543" class="icon-circle-btn" aria-label="Telefon Ibu">
+                                    <i class="fa-solid fa-phone"></i>
+                                </a>
+                                <a href="https://wa.me/60139876543" target="_blank" rel="noopener noreferrer" class="icon-circle-btn whatsapp-btn" aria-label="WhatsApp Ibu">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Contact 3: Adik -->
+                        <div class="family-card movable-item" data-move-id="family-card-3">
+                            <div class="family-info">
+                                <p class="family-role-name" contenteditable="true" spellcheck="false">KAKAK (NAJWA)</p>
+                                <p class="family-phone-number" contenteditable="true" spellcheck="false">019-222 3344</p>
+                            </div>
+                            <div class="family-action-buttons">
+                                <a href="tel:0192223344" class="icon-circle-btn" aria-label="Telefon Adik">
+                                    <i class="fa-solid fa-phone"></i>
+                                </a>
+                                <a href="https://wa.me/60192223344" target="_blank" rel="noopener noreferrer" class="icon-circle-btn whatsapp-btn" aria-label="WhatsApp Adik">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Interactive Drag Resizer Handle for Section 4 -->
+            <div class="section-resizer-bar" data-var="--s4-min-height" title="Tarik ke bawah atau ke atas untuk ubah saiz latar belakang">
+                <div class="resizer-pill"><i class="fa-solid fa-arrows-up-down"></i> Tarik Ubah Tinggi</div>
+            </div>
+        </section>
+
+        <!-- Deep Navy Site Footer Section (100% full width until the right and left) -->
+        <footer class="site-royal-footer-card">
+            <div class="footer-card-content movable-item" data-move-id="footer-card-content">
+                <h2 class="footer-monogram font-serif" contenteditable="true" spellcheck="false" data-key="footer-monogram">N & A</h2>
+                <p class="footer-tagline" contenteditable="true" spellcheck="false" data-key="footer-tagline">SELAMAT PENGANTIN BARU</p>
+            </div>
+        </footer>
+
+        <!-- Spacer for fixed bottom bar -->
+        <div class="bottom-nav-spacer"></div>
+
+        <!-- ==========================================
              BOTTOM NAVIGATION BAR matching screen.png
              ========================================== -->
-<nav class="bottom-nav" id="main-bottom-nav">
-<button class="nav-item" id="nav-btn-music" type="button">
-<i class="fa-solid fa-music nav-icon" id="music-icon-indicator"></i>
-<span class="nav-label">MUZIK</span>
-</button>
-<button class="nav-item" id="nav-btn-calendar" type="button">
-<i class="fa-regular fa-calendar nav-icon"></i>
-<span class="nav-label">KALENDAR</span>
-</button>
-<button class="nav-item" id="nav-btn-location" type="button">
-<i class="fa-solid fa-location-dot nav-icon"></i>
-<span class="nav-label">LOKASI</span>
-</button>
-<button class="nav-item" id="nav-btn-contacts" type="button">
-<i class="fa-solid fa-phone nav-icon"></i>
-<span class="nav-label">HUBUNGI</span>
-</button>
-<button class="nav-item" id="nav-btn-rsvp" type="button">
-<i class="fa-regular fa-envelope nav-icon"></i>
-<span class="nav-label">RSVP</span>
-</button>
-</nav>
-<!-- ==========================================
+        <nav class="bottom-nav" id="main-bottom-nav">
+            <button type="button" class="nav-item" id="nav-btn-music">
+                <i class="fa-solid fa-music nav-icon" id="music-icon-indicator"></i>
+                <span class="nav-label">MUZIK</span>
+            </button>
+            <button type="button" class="nav-item" id="nav-btn-calendar">
+                <i class="fa-regular fa-calendar nav-icon"></i>
+                <span class="nav-label">KALENDAR</span>
+            </button>
+            <button type="button" class="nav-item" id="nav-btn-location">
+                <i class="fa-solid fa-location-dot nav-icon"></i>
+                <span class="nav-label">LOKASI</span>
+            </button>
+            <button type="button" class="nav-item" id="nav-btn-contacts">
+                <i class="fa-solid fa-phone nav-icon"></i>
+                <span class="nav-label">HUBUNGI</span>
+            </button>
+            <button type="button" class="nav-item" id="nav-btn-rsvp">
+                <i class="fa-regular fa-envelope nav-icon"></i>
+                <span class="nav-label">RSVP</span>
+            </button>
+        </nav>
+
+        <!-- ==========================================
              INTERACTIVE MODALS & DRAWERS
              ========================================== -->
-<!-- 1. RSVP Submission Modal -->
-<div aria-hidden="true" class="modal-overlay" id="rsvp-modal">
-<div class="modal-card">
-<div class="modal-header">
-<h3 class="headline-md font-serif">Borang Kehadiran</h3>
-<button aria-label="Tutup" class="modal-close-btn" id="rsvp-modal-close" type="button">×</button>
-</div>
-<form class="modal-form" id="rsvp-submission-form">
-<div class="form-group">
-<label class="label-md">Status Kehadiran</label>
-<div class="status-toggle-row">
-<button class="toggle-option-btn active" data-status="HADIR" id="modal-tab-hadir" type="button">Hadir</button>
-<button class="toggle-option-btn" data-status="TIDAK HADIR" id="modal-tab-tidak" type="button">Tidak Hadir</button>
-</div>
-</div>
-<div class="form-group" id="pax-group">
-<label class="label-md" for="pax-select">Jumlah Kehadiran</label>
-<select class="form-input" id="pax-select">
-<option value="1">1 Orang</option>
-<option selected="" value="2">2 Orang</option>
-<option value="3">3 Orang</option>
-<option value="4">4 Orang</option>
-<option value="5">5 Orang</option>
-</select>
-</div>
-<div class="form-group">
-<label class="label-md" for="guest-name">Nama Anda</label>
-<input class="form-input" id="guest-name" placeholder="Masukkan nama penuh" required="" type="text"/>
-</div>
-<div class="form-group">
-<label class="label-md" for="guest-phone">Nombor Telefon (Pilihan)</label>
-<input class="form-input" id="guest-phone" placeholder="Contoh: 0123456789" type="tel"/>
-</div>
-<div class="form-group">
-<label class="label-md" for="guest-wish">Ucapan &amp; Doa</label>
-<textarea class="form-input form-textarea" id="guest-wish" placeholder="Titipkan ucapan buat kedua mempelai..." rows="3"></textarea>
-</div>
-<button class="btn btn-primary full-width" id="rsvp-submit-btn" type="submit">HANTAR JAWAPAN</button>
-</form>
-</div>
-</div>
-<!-- 2. Add Wish Modal -->
-<div aria-hidden="true" class="modal-overlay" id="wish-modal">
-<div class="modal-card">
-<div class="modal-header">
-<h3 class="headline-md font-serif">Titipkan Ucapan</h3>
-<button aria-label="Tutup" class="modal-close-btn" id="wish-modal-close" type="button">×</button>
-</div>
-<form class="modal-form" id="standalone-wish-form">
-<div class="form-group">
-<label class="label-md" for="wish-author-name">Nama Anda</label>
-<input class="form-input" id="wish-author-name" placeholder="Masukkan nama anda" required="" type="text"/>
-</div>
-<div class="form-group">
-<label class="label-md" for="wish-author-text">Ucapan Buat Mempelai</label>
-<textarea class="form-input form-textarea" id="wish-author-text" placeholder="Tuliskan ucapan tahniah &amp; doa anda..." required="" rows="4"></textarea>
-</div>
-<button class="btn btn-primary full-width" type="submit">HANTAR UCAPAN</button>
-</form>
-</div>
-</div>
-<!-- 3. Calendar Export Modal -->
-<div aria-hidden="true" class="modal-overlay" id="calendar-modal">
-<div class="modal-card">
-<div class="modal-header">
-<h3 class="headline-md font-serif">Simpan Tarikh</h3>
-<button aria-label="Tutup" class="modal-close-btn" id="calendar-modal-close" type="button">×</button>
-</div>
-<div class="calendar-options-list">
-<a class="btn btn-secondary full-width margin-bottom-sm" href="#" id="btn-add-google-cal" rel="noopener noreferrer" target="_blank">
-<i class="fa-brands fa-google"></i> Google Calendar
+
+        <!-- 1. RSVP Submission Modal -->
+        <div id="rsvp-modal" class="modal-overlay" aria-hidden="true">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3 class="headline-md font-serif">Borang Kehadiran</h3>
+                    <button type="button" class="modal-close-btn" id="rsvp-modal-close" aria-label="Tutup">&times;</button>
+                </div>
+                <form id="rsvp-submission-form" class="modal-form">
+                    <div class="form-group">
+                        <label class="label-md">Status Kehadiran</label>
+                        <div class="status-toggle-row">
+                            <button type="button" class="toggle-option-btn active" id="modal-tab-hadir" data-status="HADIR">Hadir</button>
+                            <button type="button" class="toggle-option-btn" id="modal-tab-tidak" data-status="TIDAK HADIR">Tidak Hadir</button>
+                        </div>
+                    </div>
+
+                    <div id="pax-group" class="form-group">
+                        <label for="pax-select" class="label-md">Jumlah Kehadiran</label>
+                        <select id="pax-select" class="form-input">
+                            <option value="1">1 Orang</option>
+                            <option value="2" selected>2 Orang</option>
+                            <option value="3">3 Orang</option>
+                            <option value="4">4 Orang</option>
+                            <option value="5">5 Orang</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guest-name" class="label-md">Nama Anda</label>
+                        <input type="text" id="guest-name" class="form-input" placeholder="Masukkan nama penuh" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guest-phone" class="label-md">Nombor Telefon (Pilihan)</label>
+                        <input type="tel" id="guest-phone" class="form-input" placeholder="Contoh: 0123456789">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guest-wish" class="label-md">Ucapan & Doa</label>
+                        <textarea id="guest-wish" class="form-input form-textarea" rows="3" placeholder="Titipkan ucapan buat kedua mempelai..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary full-width" id="rsvp-submit-btn">HANTAR JAWAPAN</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 2. Add Wish Modal -->
+        <div id="wish-modal" class="modal-overlay" aria-hidden="true">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3 class="headline-md font-serif">Titipkan Ucapan</h3>
+                    <button type="button" class="modal-close-btn" id="wish-modal-close" aria-label="Tutup">&times;</button>
+                </div>
+                <form id="standalone-wish-form" class="modal-form">
+                    <div class="form-group">
+                        <label for="wish-author-name" class="label-md">Nama Anda</label>
+                        <input type="text" id="wish-author-name" class="form-input" placeholder="Masukkan nama anda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="wish-author-text" class="label-md">Ucapan Buat Mempelai</label>
+                        <textarea id="wish-author-text" class="form-input form-textarea" rows="4" placeholder="Tuliskan ucapan tahniah & doa anda..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">HANTAR UCAPAN</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 3. Calendar Export Modal -->
+        <div id="calendar-modal" class="modal-overlay" aria-hidden="true">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3 class="headline-md font-serif">Simpan Tarikh</h3>
+                    <button type="button" class="modal-close-btn" id="calendar-modal-close" aria-label="Tutup">&times;</button>
+                </div>
+                <div class="calendar-options-list">
+                    <a id="btn-add-google-cal" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary full-width margin-bottom-sm">
+                        <i class="fa-brands fa-google"></i> Google Calendar
                     </a>
-<button class="btn btn-secondary full-width" id="btn-download-ics" type="button">
-<i class="fa-solid fa-calendar-arrow-down"></i> Muat Turun (.ICS)
+                    <button type="button" id="btn-download-ics" class="btn btn-secondary full-width">
+                        <i class="fa-solid fa-calendar-arrow-down"></i> Muat Turun (.ICS)
                     </button>
-</div>
-</div>
-</div>
-<!-- 4. Navigation Menu Drawer -->
-<div aria-hidden="true" class="drawer-overlay" id="nav-drawer">
-<div class="drawer-panel">
-<div class="drawer-header">
-<span class="brand-monogram">NADZRI &amp; ADIBAH</span>
-<button aria-label="Tutup Menu" class="drawer-close-btn" id="nav-drawer-close" type="button">×</button>
-</div>
-<ul class="drawer-menu-list">
-<li><a class="drawer-link" href="#screen-hero"><i class="fa-solid fa-heart"></i> Jemputan</a></li>
-<li><a class="drawer-link" href="#screen-countdown"><i class="fa-regular fa-clock"></i> Menghitung Hari</a></li>
-<li><a class="drawer-link" href="#screen-countdown"><i class="fa-solid fa-sparkles"></i> Ucapan &amp; Doa</a></li>
-<li><a class="drawer-link" href="#screen-location"><i class="fa-solid fa-location-dot"></i> Lokasi Majlis</a></li>
-<li><a class="drawer-link" href="#screen-rsvp"><i class="fa-regular fa-envelope"></i> Kehadiran &amp; Hubungi</a></li>
-</ul>
-</div>
-</div>
-<!-- 5. Initial Audio Unlock Overlay -->
-<div class="audio-overlay" id="audio-overlay">
-<div class="audio-overlay-card">
-<div class="envelope-stamp"><i class="fa-solid fa-envelope-open-text"></i></div>
-<p class="label-md letter-tracking-lg margin-bottom-xs">WALIMATUL URUS</p>
-<h2 class="display-sm font-serif">Nadzri &amp; Adibah</h2>
-<p class="body-sm text-primary-muted margin-bottom-lg">Ahad, 24 Jan 2027</p>
-<button class="btn btn-primary" id="open-invite" type="button">
-<i class="fa-solid fa-music"></i> BUKA JEMPUTAN
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Navigation Menu Drawer -->
+        <div id="nav-drawer" class="drawer-overlay" aria-hidden="true">
+            <div class="drawer-panel">
+                <div class="drawer-header">
+                    <span class="brand-monogram">NADZRI & ADIBAH</span>
+                    <button type="button" class="drawer-close-btn" id="nav-drawer-close" aria-label="Tutup Menu">&times;</button>
+                </div>
+                <ul class="drawer-menu-list">
+                    <li><a href="#screen-hero" class="drawer-link"><i class="fa-solid fa-heart"></i> Jemputan</a></li>
+                    <li><a href="#screen-countdown" class="drawer-link"><i class="fa-regular fa-clock"></i> Menghitung Hari</a></li>
+                    <li><a href="#screen-countdown" class="drawer-link"><i class="fa-solid fa-sparkles"></i> Ucapan & Doa</a></li>
+                    <li><a href="#screen-location" class="drawer-link"><i class="fa-solid fa-location-dot"></i> Lokasi Majlis</a></li>
+                    <li><a href="#screen-rsvp" class="drawer-link"><i class="fa-regular fa-envelope"></i> Kehadiran & Hubungi</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 5. Initial Audio Unlock Overlay -->
+        <div id="audio-overlay" class="audio-overlay">
+            <div class="audio-overlay-card">
+                <div class="envelope-stamp"><i class="fa-solid fa-envelope-open-text"></i></div>
+                <p class="label-md letter-tracking-lg margin-bottom-xs">WALIMATUL URUS</p>
+                <h2 class="display-sm font-serif">Nadzri & Adibah</h2>
+                <p class="body-sm text-primary-muted margin-bottom-lg">Ahad, 24 Jan 2027</p>
+                <button type="button" class="btn btn-primary" id="open-invite">
+                    <i class="fa-solid fa-music"></i> BUKA JEMPUTAN
                 </button>
-</div>
-</div>
-</div>
-<script src="script.js"></script>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         DESIGN STUDIO & VISUAL RESIZE PANEL
+         ========================================== -->
+    <div id="design-studio-panel" class="design-studio-panel minimized">
+        <div class="studio-header">
+            <div class="studio-title-row">
+                <i class="fa-solid fa-sliders"></i>
+                <div>
+                    <h3>Studio Reka Bentuk</h3>
+                    <p>Ubah saiz latar & jarak secara langsung</p>
+                </div>
+            </div>
+            <button type="button" class="studio-close-btn" id="btn-close-studio" title="Tutup Studio">&times;</button>
+        </div>
+
+        <!-- Studio Tabs -->
+        <div class="studio-tabs">
+            <button type="button" class="studio-tab-btn active" data-tab="tab-s15">Jemputan</button>
+            <button type="button" class="studio-tab-btn" data-tab="tab-s2">Hitung Hari</button>
+            <button type="button" class="studio-tab-btn" data-tab="tab-s3">Lokasi</button>
+            <button type="button" class="studio-tab-btn" data-tab="tab-s4">RSVP</button>
+            <button type="button" class="studio-tab-btn" data-tab="tab-s1">Hero</button>
+            <button type="button" class="studio-tab-btn" data-tab="tab-footer">Footer</button>
+            <button type="button" class="studio-tab-btn" data-tab="tab-global">Umum</button>
+        </div>
+
+        <div class="studio-body">
+            <!-- TAB S1.5: Jemputan & Maklumat -->
+            <div class="studio-tab-content active" id="tab-s15">
+                <div class="studio-section-divider">🖼️ SAIZ & POSISI IMEJ LATAR</div>
+                
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-magnifying-glass-plus"></i> Zoom Imej Latar (Skala)</label>
+                        <span class="val-badge" id="val-zoom-s15">100%</span>
+                    </div>
+                    <input type="range" class="studio-slider zoom-slider" data-prefix="--s15" min="95" max="130" step="1" value="100">
+                    <div class="quick-preset-row">
+                        <button type="button" class="preset-btn" data-prefix="--s15" data-zoom="100" data-y="0">100% Asal</button>
+                        <button type="button" class="preset-btn active" data-prefix="--s15" data-zoom="102" data-y="-2">+2% Buang Putih</button>
+                        <button type="button" class="preset-btn" data-prefix="--s15" data-zoom="105" data-y="-4">+5% Zoom</button>
+                        <button type="button" class="preset-btn" data-prefix="--s15" data-mode="cover">Cover</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-arrows-up-down"></i> Anjakan Atas / Bawah (Posisi Y)</label>
+                        <span class="val-badge" id="val--s15-bg-pos-y">0px</span>
+                    </div>
+                    <div class="nudge-control-row">
+                        <button type="button" class="nudge-btn" data-var="--s15-bg-pos-y" data-delta="-2" title="Tolak ke atas 2px"><i class="fa-solid fa-arrow-up"></i></button>
+                        <input type="range" class="studio-slider" id="slider--s15-bg-pos-y" data-var="--s15-bg-pos-y" min="-60" max="60" step="1" value="0">
+                        <button type="button" class="nudge-btn" data-var="--s15-bg-pos-y" data-delta="2" title="Tolak ke bawah 2px"><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                </div>
+
+                <div class="control-row-dual">
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Lebar Imej</label>
+                            <span class="val-badge" id="val--s15-bg-scale-x">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s15-bg-scale-x" data-var="--s15-bg-scale-x" min="90" max="130" step="1" value="100">
+                    </div>
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Tinggi Imej</label>
+                            <span class="val-badge" id="val--s15-bg-scale-y">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s15-bg-scale-y" data-var="--s15-bg-scale-y" min="90" max="130" step="1" value="100">
+                    </div>
+                </div>
+
+                <div class="studio-section-divider">📐 KETINGGIAN SEKSYEN & JARAK</div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Tinggi Seksyen</label>
+                        <span class="val-badge" id="val--s15-min-height">1022px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s15-min-height" data-var="--s15-min-height" min="800" max="1400" step="5" value="1022">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Atas (Ruang Bunga)</label>
+                        <span class="val-badge" id="val--s15-padding-top">165px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s15-padding-top" data-var="--s15-padding-top" min="90" max="250" step="5" value="165">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Bawah</label>
+                        <span class="val-badge" id="val--s15-padding-bottom">140px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s15-padding-bottom" data-var="--s15-padding-bottom" min="50" max="220" step="5" value="140">
+                </div>
+            </div>
+
+            <!-- TAB S2: Countdown & Wishes -->
+            <div class="studio-tab-content" id="tab-s2">
+                <div class="studio-section-divider">🖼️ SAIZ & POSISI IMEJ LATAR</div>
+                
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-magnifying-glass-plus"></i> Zoom Imej Latar (Skala)</label>
+                        <span class="val-badge" id="val-zoom-s2">100%</span>
+                    </div>
+                    <input type="range" class="studio-slider zoom-slider" data-prefix="--s2" min="95" max="130" step="1" value="100">
+                    <div class="quick-preset-row">
+                        <button type="button" class="preset-btn" data-prefix="--s2" data-zoom="100" data-y="0">100% Asal</button>
+                        <button type="button" class="preset-btn" data-prefix="--s2" data-zoom="102" data-y="-2">+2% Buang Putih</button>
+                        <button type="button" class="preset-btn" data-prefix="--s2" data-zoom="105" data-y="-4">+5% Zoom</button>
+                        <button type="button" class="preset-btn" data-prefix="--s2" data-mode="cover">Cover</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-arrows-up-down"></i> Anjakan Atas / Bawah (Posisi Y)</label>
+                        <span class="val-badge" id="val--s2-bg-pos-y">0px</span>
+                    </div>
+                    <div class="nudge-control-row">
+                        <button type="button" class="nudge-btn" data-var="--s2-bg-pos-y" data-delta="-2" title="Tolak ke atas 2px"><i class="fa-solid fa-arrow-up"></i></button>
+                        <input type="range" class="studio-slider" id="slider--s2-bg-pos-y" data-var="--s2-bg-pos-y" min="-60" max="60" step="1" value="0">
+                        <button type="button" class="nudge-btn" data-var="--s2-bg-pos-y" data-delta="2" title="Tolak ke bawah 2px"><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                </div>
+
+                <div class="control-row-dual">
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Lebar Imej</label>
+                            <span class="val-badge" id="val--s2-bg-scale-x">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s2-bg-scale-x" data-var="--s2-bg-scale-x" min="90" max="130" step="1" value="100">
+                    </div>
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Tinggi Imej</label>
+                            <span class="val-badge" id="val--s2-bg-scale-y">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s2-bg-scale-y" data-var="--s2-bg-scale-y" min="90" max="130" step="1" value="100">
+                    </div>
+                </div>
+
+                <div class="studio-section-divider">📐 KETINGGIAN SEKSYEN & JARAK</div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Tinggi Seksyen</label>
+                        <span class="val-badge" id="val--s2-min-height">899px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s2-min-height" data-var="--s2-min-height" min="700" max="1300" step="5" value="899">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Atas</label>
+                        <span class="val-badge" id="val--s2-padding-top">78px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s2-padding-top" data-var="--s2-padding-top" min="40" max="160" step="2" value="78">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Jarak Pembahagi Bunga Emas</label>
+                        <span class="val-badge" id="val--s2-spacer-height">140px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s2-spacer-height" data-var="--s2-spacer-height" min="50" max="240" step="5" value="140">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Bawah</label>
+                        <span class="val-badge" id="val--s2-padding-bottom">40px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s2-padding-bottom" data-var="--s2-padding-bottom" min="10" max="120" step="5" value="40">
+                </div>
+            </div>
+
+            <!-- TAB S3: Lokasi -->
+            <div class="studio-tab-content" id="tab-s3">
+                <div class="studio-section-divider">🖼️ SAIZ & POSISI IMEJ LATAR</div>
+                
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-magnifying-glass-plus"></i> Zoom Imej Latar (Skala)</label>
+                        <span class="val-badge" id="val-zoom-s3">100%</span>
+                    </div>
+                    <input type="range" class="studio-slider zoom-slider" data-prefix="--s3" min="95" max="130" step="1" value="100">
+                    <div class="quick-preset-row">
+                        <button type="button" class="preset-btn" data-prefix="--s3" data-zoom="100" data-y="0">100% Asal</button>
+                        <button type="button" class="preset-btn" data-prefix="--s3" data-zoom="102" data-y="-2">+2% Buang Putih</button>
+                        <button type="button" class="preset-btn" data-prefix="--s3" data-zoom="105" data-y="-4">+5% Zoom</button>
+                        <button type="button" class="preset-btn" data-prefix="--s3" data-mode="cover">Cover</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-arrows-up-down"></i> Anjakan Atas / Bawah (Posisi Y)</label>
+                        <span class="val-badge" id="val--s3-bg-pos-y">0px</span>
+                    </div>
+                    <div class="nudge-control-row">
+                        <button type="button" class="nudge-btn" data-var="--s3-bg-pos-y" data-delta="-2" title="Tolak ke atas 2px"><i class="fa-solid fa-arrow-up"></i></button>
+                        <input type="range" class="studio-slider" id="slider--s3-bg-pos-y" data-var="--s3-bg-pos-y" min="-60" max="60" step="1" value="0">
+                        <button type="button" class="nudge-btn" data-var="--s3-bg-pos-y" data-delta="2" title="Tolak ke bawah 2px"><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                </div>
+
+                <div class="control-row-dual">
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Lebar Imej</label>
+                            <span class="val-badge" id="val--s3-bg-scale-x">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s3-bg-scale-x" data-var="--s3-bg-scale-x" min="90" max="130" step="1" value="100">
+                    </div>
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Tinggi Imej</label>
+                            <span class="val-badge" id="val--s3-bg-scale-y">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s3-bg-scale-y" data-var="--s3-bg-scale-y" min="90" max="130" step="1" value="100">
+                    </div>
+                </div>
+
+                <div class="studio-section-divider">📐 KETINGGIAN SEKSYEN & JARAK</div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Tinggi Seksyen</label>
+                        <span class="val-badge" id="val--s3-min-height">1022px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s3-min-height" data-var="--s3-min-height" min="800" max="1400" step="5" value="1022">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Atas</label>
+                        <span class="val-badge" id="val--s3-padding-top">175px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s3-padding-top" data-var="--s3-padding-top" min="110" max="260" step="5" value="175">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Tinggi Peta Google</label>
+                        <span class="val-badge" id="val--s3-map-height">215px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s3-map-height" data-var="--s3-map-height" min="150" max="320" step="5" value="215">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Bawah</label>
+                        <span class="val-badge" id="val--s3-padding-bottom">120px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s3-padding-bottom" data-var="--s3-padding-bottom" min="50" max="200" step="5" value="120">
+                </div>
+            </div>
+
+            <!-- TAB S4: RSVP & Hubungi -->
+            <div class="studio-tab-content" id="tab-s4">
+                <div class="studio-section-divider">🖼️ SAIZ & POSISI IMEJ LATAR</div>
+                
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-magnifying-glass-plus"></i> Zoom Imej Latar (Skala)</label>
+                        <span class="val-badge" id="val-zoom-s4">100%</span>
+                    </div>
+                    <input type="range" class="studio-slider zoom-slider" data-prefix="--s4" min="95" max="130" step="1" value="100">
+                    <div class="quick-preset-row">
+                        <button type="button" class="preset-btn" data-prefix="--s4" data-zoom="100" data-y="0">100% Asal</button>
+                        <button type="button" class="preset-btn" data-prefix="--s4" data-zoom="102" data-y="-2">+2% Buang Putih</button>
+                        <button type="button" class="preset-btn" data-prefix="--s4" data-zoom="105" data-y="-4">+5% Zoom</button>
+                        <button type="button" class="preset-btn" data-prefix="--s4" data-mode="cover">Cover</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-arrows-up-down"></i> Anjakan Atas / Bawah (Posisi Y)</label>
+                        <span class="val-badge" id="val--s4-bg-pos-y">0px</span>
+                    </div>
+                    <div class="nudge-control-row">
+                        <button type="button" class="nudge-btn" data-var="--s4-bg-pos-y" data-delta="-2" title="Tolak ke atas 2px"><i class="fa-solid fa-arrow-up"></i></button>
+                        <input type="range" class="studio-slider" id="slider--s4-bg-pos-y" data-var="--s4-bg-pos-y" min="-60" max="60" step="1" value="0">
+                        <button type="button" class="nudge-btn" data-var="--s4-bg-pos-y" data-delta="2" title="Tolak ke bawah 2px"><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                </div>
+
+                <div class="control-row-dual">
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Lebar Imej</label>
+                            <span class="val-badge" id="val--s4-bg-scale-x">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s4-bg-scale-x" data-var="--s4-bg-scale-x" min="90" max="130" step="1" value="100">
+                    </div>
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Tinggi Imej</label>
+                            <span class="val-badge" id="val--s4-bg-scale-y">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s4-bg-scale-y" data-var="--s4-bg-scale-y" min="90" max="130" step="1" value="100">
+                    </div>
+                </div>
+
+                <div class="studio-section-divider">📐 KETINGGIAN SEKSYEN & JARAK</div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Tinggi Seksyen</label>
+                        <span class="val-badge" id="val--s4-min-height">898px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s4-min-height" data-var="--s4-min-height" min="700" max="1300" step="5" value="898">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Atas</label>
+                        <span class="val-badge" id="val--s4-padding-top">165px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s4-padding-top" data-var="--s4-padding-top" min="90" max="240" step="5" value="165">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Bawah</label>
+                        <span class="val-badge" id="val--s4-padding-bottom">24px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s4-padding-bottom" data-var="--s4-padding-bottom" min="0" max="100" step="4" value="24">
+                </div>
+            </div>
+
+            <!-- TAB S1: Kad Hero -->
+            <div class="studio-tab-content" id="tab-s1">
+                <div class="studio-section-divider">🖼️ SAIZ & POSISI IMEJ KAD</div>
+                
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-magnifying-glass-plus"></i> Zoom Imej Kad (Skala)</label>
+                        <span class="val-badge" id="val-zoom-s1">100%</span>
+                    </div>
+                    <input type="range" class="studio-slider zoom-slider" data-prefix="--s1" min="95" max="130" step="1" value="100">
+                    <div class="quick-preset-row">
+                        <button type="button" class="preset-btn" data-prefix="--s1" data-zoom="100" data-y="0">100% Asal</button>
+                        <button type="button" class="preset-btn" data-prefix="--s1" data-zoom="102" data-y="-2">+2% Buang Putih</button>
+                        <button type="button" class="preset-btn" data-prefix="--s1" data-zoom="105" data-y="-4">+5% Zoom</button>
+                        <button type="button" class="preset-btn" data-prefix="--s1" data-mode="cover">Cover</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-arrows-up-down"></i> Anjakan Atas / Bawah (Posisi Y)</label>
+                        <span class="val-badge" id="val--s1-bg-pos-y">0px</span>
+                    </div>
+                    <div class="nudge-control-row">
+                        <button type="button" class="nudge-btn" data-var="--s1-bg-pos-y" data-delta="-2" title="Tolak ke atas 2px"><i class="fa-solid fa-arrow-up"></i></button>
+                        <input type="range" class="studio-slider" id="slider--s1-bg-pos-y" data-var="--s1-bg-pos-y" min="-60" max="60" step="1" value="0">
+                        <button type="button" class="nudge-btn" data-var="--s1-bg-pos-y" data-delta="2" title="Tolak ke bawah 2px"><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                </div>
+
+                <div class="control-row-dual">
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Lebar Imej</label>
+                            <span class="val-badge" id="val--s1-bg-scale-x">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s1-bg-scale-x" data-var="--s1-bg-scale-x" min="90" max="130" step="1" value="100">
+                    </div>
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Tinggi Imej</label>
+                            <span class="val-badge" id="val--s1-bg-scale-y">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--s1-bg-scale-y" data-var="--s1-bg-scale-y" min="90" max="130" step="1" value="100">
+                    </div>
+                </div>
+
+                <div class="studio-section-divider">📐 JARAK KANDUNGAN KAD</div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Atas Kad</label>
+                        <span class="val-badge" id="val--s1-padding-top">96px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s1-padding-top" data-var="--s1-padding-top" min="50" max="150" step="2" value="96">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Padding Bawah Kad</label>
+                        <span class="val-badge" id="val--s1-padding-bottom">76px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--s1-padding-bottom" data-var="--s1-padding-bottom" min="40" max="140" step="2" value="76">
+                </div>
+            </div>
+
+            <!-- TAB Footer: Royal Navy Footer -->
+            <div class="studio-tab-content" id="tab-footer">
+                <div class="studio-section-divider">🖼️ SAIZ & POSISI IMEJ FOOTER</div>
+                
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-magnifying-glass-plus"></i> Zoom Imej Footer</label>
+                        <span class="val-badge" id="val-zoom-footer">100%</span>
+                    </div>
+                    <input type="range" class="studio-slider zoom-slider" data-prefix="--footer" min="95" max="130" step="1" value="100">
+                    <div class="quick-preset-row">
+                        <button type="button" class="preset-btn" data-prefix="--footer" data-zoom="100" data-y="0">100% Asal</button>
+                        <button type="button" class="preset-btn" data-prefix="--footer" data-zoom="102" data-y="-2">+2% Buang Putih</button>
+                        <button type="button" class="preset-btn" data-prefix="--footer" data-zoom="105" data-y="-4">+5% Zoom</button>
+                        <button type="button" class="preset-btn" data-prefix="--footer" data-mode="cover">Cover</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label><i class="fa-solid fa-arrows-up-down"></i> Anjakan Atas / Bawah (Posisi Y)</label>
+                        <span class="val-badge" id="val--footer-bg-pos-y">0px</span>
+                    </div>
+                    <div class="nudge-control-row">
+                        <button type="button" class="nudge-btn" data-var="--footer-bg-pos-y" data-delta="-2" title="Tolak ke atas 2px"><i class="fa-solid fa-arrow-up"></i></button>
+                        <input type="range" class="studio-slider" id="slider--footer-bg-pos-y" data-var="--footer-bg-pos-y" min="-40" max="40" step="1" value="0">
+                        <button type="button" class="nudge-btn" data-var="--footer-bg-pos-y" data-delta="2" title="Tolak ke bawah 2px"><i class="fa-solid fa-arrow-down"></i></button>
+                    </div>
+                </div>
+
+                <div class="control-row-dual">
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Lebar Imej</label>
+                            <span class="val-badge" id="val--footer-bg-scale-x">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--footer-bg-scale-x" data-var="--footer-bg-scale-x" min="90" max="130" step="1" value="100">
+                    </div>
+                    <div class="control-group half-width">
+                        <div class="control-label-row">
+                            <label>Tinggi Imej</label>
+                            <span class="val-badge" id="val--footer-bg-scale-y">100%</span>
+                        </div>
+                        <input type="range" class="studio-slider" id="slider--footer-bg-scale-y" data-var="--footer-bg-scale-y" min="90" max="130" step="1" value="100">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB Global: Umum -->
+            <div class="studio-tab-content" id="tab-global">
+                <div class="studio-section-divider">📱 LEBAR SKRIN TELEFON</div>
+                <div class="control-group">
+                    <div class="control-label-row">
+                        <label>Lebar Kad (Phone Width)</label>
+                        <span class="val-badge" id="val--card-max-width">427px</span>
+                    </div>
+                    <input type="range" class="studio-slider" id="slider--card-max-width" data-var="--card-max-width" min="360" max="500" step="2" value="427">
+                </div>
+            </div>
+        </div>
+
+        <!-- Studio Actions -->
+        <div class="studio-actions-footer">
+            <button type="button" class="studio-btn btn-save-studio" id="btn-save-studio" title="Simpan perubahan ke pelayar">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan
+            </button>
+            <button type="button" class="studio-btn btn-copy-css" id="btn-copy-css" title="Salin kod CSS">
+                <i class="fa-solid fa-code"></i> Salin CSS
+            </button>
+            <button type="button" class="studio-btn btn-reset-studio" id="btn-reset-studio" title="Kembalikan nilai asal">
+                <i class="fa-solid fa-rotate-left"></i> Asal
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Trigger Button for Studio -->
+    <button type="button" class="studio-trigger-fab" id="btn-open-studio" title="Buka Studio Saiz & Reka Bentuk">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Studio Saiz</span>
+    </button>
+
+    <script src="script.js"></script>
 </body>
 </html>
