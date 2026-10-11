@@ -18,14 +18,14 @@
     
     /* Section 1: Hero Card */
     --s1-padding-top: 96px;
-    --s1-padding-bottom: 96px;
+    --s1-padding-bottom: 76px;
     --s1-bg-scale-x: 100%;
     --s1-bg-scale-y: 100%;
     --s1-bg-pos-x: center;
     --s1-bg-pos-y: 0px;
     
     /* Section 1.5: Jemputan */
-    --s15-min-height: 1022px;
+    --s15-min-height: 927px;
     --s15-padding-top: 165px;
     --s15-padding-bottom: 140px;
     --s15-bg-scale-x: 100%;
@@ -44,7 +44,7 @@
     --s2-bg-pos-y: 0px;
     
     /* Section 3: Lokasi */
-    --s3-min-height: 1022px;
+    --s3-min-height: 787px;
     --s3-padding-top: 175px;
     --s3-map-height: 215px;
     --s3-padding-bottom: 120px;
@@ -54,7 +54,7 @@
     --s3-bg-pos-y: 0px;
     
     /* Section 4: RSVP */
-    --s4-min-height: 898px;
+    --s4-min-height: 712px;
     --s4-padding-top: 165px;
     --s4-padding-bottom: 24px;
     --s4-bg-scale-x: 100%;
@@ -1444,4 +1444,23 @@ body {
     justify-content: center;
     margin-bottom: 20px;
     box-shadow: var(--ambient-shadow);
+}
+
+/* =========================================================
+   USER CALIBRATED FIRST PAGE TEXT SPACING & OFFSETS
+   ========================================================= */
+[data-move-id="hero-all-text"] {
+    transform: translateY(-15px);
+}
+[data-move-id="hero-title-group"] {
+    transform: translateY(-53px);
+}
+[data-move-id="hero-fine-divider"] {
+    transform: translateY(-30px);
+}
+[data-move-id="hero-top-label"] {
+    transform: translateY(-16px);
+}
+[data-move-id="venue-info"] {
+    transform: translateY(38px);
 }
