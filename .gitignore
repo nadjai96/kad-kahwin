@@ -1,0 +1,5 @@
+screenshot_*.png
+test_*.py
+clean_background_images.py
+scratch/
+.system_generated/

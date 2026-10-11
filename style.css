@@ -1,0 +1,808 @@
+/* ==========================================================
+   JEMPUT.LA VIN049 - WALIMATUL URUS HARIZ & SYAHIRAH
+   Exact Replica: Styles, Colors, Fonts, Layout & User Flow
+   ========================================================== */
+
+:root {
+    --color-primary: #444444;
+    --color-cover-name: #BCA099;
+    --color-cover-text: #BCA099;
+    --color-body-text: #927D77;
+    --color-body-bg: #EEEBE4;
+    --color-footer: #BCA099;
+    --color-seal: #EEEBE4;
+    --gate-color: #F2F2F2;
+    --max-w: 480px;
+    --font-prata: 'Prata', serif;
+    --font-cinzel: 'Cinzel Decorative', serif;
+    --font-montserrat: 'Montserrat', sans-serif;
+}
+
+/* Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    background-color: #D6D0C8;
+    font-family: var(--font-prata);
+    color: var(--color-body-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+#app {
+    position: relative;
+    width: 100%;
+    max-width: var(--max-w);
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: var(--color-body-bg);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+/* ==========================================================
+   1. OPENING GATE / DOUBLE DOORS
+   ========================================================== */
+.cover-gate {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.cover-gate.opened {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none !important;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.gate-wrap {
+    position: relative;
+    width: 100%;
+    max-width: var(--max-w);
+    height: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+}
+
+.door-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50.5%;
+    background-color: var(--gate-color);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(235, 230, 222, 0.5) 100%);
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.door-left {
+    left: 0;
+    box-shadow: inset -6px 0 15px rgba(0, 0, 0, 0.08), 3px 0 10px rgba(0, 0, 0, 0.05);
+    border-right: 1px solid rgba(146, 125, 119, 0.15);
+}
+
+.door-right {
+    right: 0;
+    box-shadow: inset 6px 0 15px rgba(0, 0, 0, 0.08);
+}
+
+.cover-gate.opened .door-left {
+    transform: translateX(-100%);
+}
+
+.cover-gate.opened .door-right {
+    transform: translateX(100%);
+}
+
+/* Seal Container */
+.seal-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.cover-gate.opened .seal-container {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+    pointer-events: none;
+}
+
+.seal-circle {
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+    background-color: var(--color-seal);
+    border: 1px solid var(--color-body-text);
+    box-shadow: 
+        0 8px 24px rgba(60, 45, 40, 0.22),
+        inset 0 1px 3px rgba(255, 255, 255, 0.8),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    outline: none;
+    padding: 10px;
+    color: var(--color-body-text);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.seal-circle:hover {
+    transform: scale(1.04);
+    box-shadow: 0 12px 28px rgba(60, 45, 40, 0.28);
+}
+
+.seal-circle:active {
+    transform: scale(0.96);
+}
+
+.seal-names {
+    font-family: var(--font-prata);
+    font-size: 1.15rem;
+    line-height: 1.15;
+    text-align: center;
+}
+
+.seal-amp {
+    font-size: 1.05rem;
+    display: inline-block;
+}
+
+.seal-divider {
+    width: 45px;
+    height: 1px;
+    background-color: var(--color-body-text);
+    opacity: 0.5;
+    margin: 7px 0 6px 0;
+}
+
+.seal-text {
+    font-family: var(--font-montserrat);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+}
+
+/* ==========================================================
+   2. MAIN CARD BODY
+   ========================================================== */
+.card-main {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Section Hero (Cover BG with floral wreath) */
+.section-hero {
+    position: relative;
+    width: 100%;
+    min-height: 92vh;
+    background-color: var(--color-body-bg);
+    background-image: url('assets/cover_bg.png');
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: top center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 140px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    color: var(--color-cover-name);
+}
+
+.hero-event-type {
+    font-family: var(--font-prata);
+    font-size: 18px;
+    color: var(--color-cover-text);
+    margin-bottom: 25px;
+}
+
+.hero-names {
+    font-family: var(--font-prata);
+    font-size: 50px;
+    line-height: 1.05;
+    color: var(--color-cover-name);
+    margin-bottom: 25px;
+}
+
+.hero-amp {
+    font-size: 22px;
+    margin: 4px 0;
+}
+
+.hero-date {
+    font-family: var(--font-prata);
+    font-size: 18px;
+    color: var(--color-cover-text);
+    margin-bottom: 12px;
+}
+
+.hero-venue {
+    font-family: var(--font-prata);
+    font-size: 18px;
+    color: var(--color-cover-text);
+    max-width: 320px;
+    line-height: 1.35;
+}
+
+/* Section Body (Card BG with side floral borders) */
+.section-body {
+    position: relative;
+    width: 100%;
+    background-color: var(--color-body-bg);
+    background-image: url('assets/card_bg.png');
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+    background-position: top center;
+    padding: 60px 28px 40px 28px;
+    text-align: center;
+    color: var(--color-body-text);
+}
+
+/* Greeting Text */
+.text-greeting {
+    font-family: var(--font-prata);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+/* Parents */
+.text-parents {
+    font-family: var(--font-prata);
+    font-size: 22px;
+    line-height: 1.35;
+    margin-bottom: 35px;
+}
+
+.text-parents .amp {
+    font-size: 18px;
+    margin: 4px 0;
+}
+
+/* Invitation Phrase */
+.text-invitation {
+    font-family: var(--font-prata);
+    font-size: 16px;
+    line-height: 1.65;
+    margin-bottom: 35px;
+}
+
+.guest-name-text {
+    font-weight: 700;
+}
+
+/* Bride & Groom Full Names */
+.text-bride-groom {
+    font-family: var(--font-prata);
+    font-size: 22px;
+    line-height: 1.35;
+    margin-bottom: 45px;
+}
+
+.text-bride-groom .amp {
+    font-size: 18px;
+    margin: 4px 0;
+}
+
+/* Details Block (Tempat, Tarikh, Waktu, Kod Pakaian) */
+.details-block {
+    margin-bottom: 40px;
+}
+
+.detail-group {
+    margin-bottom: 26px;
+}
+
+.detail-label {
+    font-family: var(--font-prata);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+.detail-venue-name {
+    font-family: var(--font-cinzel);
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.detail-venue-addr {
+    font-family: var(--font-prata);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.detail-val {
+    font-family: var(--font-prata);
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.detail-action-wrap {
+    margin-top: 15px;
+}
+
+/* Button Outline (Used across jemput.la) */
+.btn-outline {
+    font-family: var(--font-prata);
+    font-size: 16px;
+    color: var(--color-body-text);
+    background: transparent;
+    border: 1px solid var(--color-body-text);
+    border-radius: 8px;
+    padding: 8px 24px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-outline:hover {
+    background-color: rgba(146, 125, 119, 0.08);
+}
+
+.btn-outline:active {
+    opacity: 0.7;
+}
+
+/* Section 3: Program / Timeline (Frosted Box) */
+.program-box {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 30px 20px;
+    margin: 30px 10px;
+    color: #77645F;
+}
+
+.program-title {
+    font-family: var(--font-prata);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 22px;
+}
+
+.program-item {
+    margin-bottom: 18px;
+}
+
+.program-item:last-child {
+    margin-bottom: 0;
+}
+
+.program-sub {
+    font-family: var(--font-prata);
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.program-time {
+    font-family: var(--font-prata);
+    font-size: 16px;
+}
+
+/* Section 4: Doa */
+.doa-text-block {
+    padding: 25px 15px;
+    font-family: var(--font-prata);
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 30px;
+}
+
+.doa-text-block p {
+    margin-bottom: 6px;
+}
+
+/* Section 5: Countdown */
+.countdown-section {
+    margin-bottom: 40px;
+}
+
+.countdown-heading {
+    font-family: var(--font-prata);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 22px;
+}
+
+.countdown-columns {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+}
+
+.cnt-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cnt-num {
+    font-family: var(--font-prata);
+    font-size: 26px;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.cnt-lbl {
+    font-family: var(--font-prata);
+    font-size: 15px;
+}
+
+/* Section 6: Ucapan */
+.wishes-section {
+    margin-bottom: 40px;
+}
+
+.wishes-heading {
+    font-family: var(--font-prata);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 25px;
+}
+
+.wishes-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin-bottom: 35px;
+}
+
+.wish-single {
+    padding: 0 10px;
+}
+
+.wish-quote {
+    font-family: var(--font-prata);
+    font-size: 16px;
+    line-height: 1.55;
+    margin-bottom: 4px;
+}
+
+.wish-author {
+    font-family: var(--font-prata);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.wish-buttons-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btn-rsvp-action, .btn-wish-action {
+    padding: 10px 18px;
+    font-size: 15px;
+    flex: 1;
+    max-width: 170px;
+}
+
+/* Signature */
+.jemputla-signature {
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.sig-lead {
+    font-family: var(--font-montserrat);
+    font-size: 12px;
+    opacity: 0.65;
+    margin-bottom: 2px;
+}
+
+.sig-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 26px;
+    opacity: 0.75;
+}
+
+.card-bottom-spacer {
+    height: 60px;
+}
+
+/* ==========================================================
+   3. BOTTOM NAVIGATION DOCK (EXACT 4 ICONS)
+   ========================================================== */
+.footer-dock {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: var(--max-w);
+    height: 56px;
+    background-color: var(--color-footer);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 100;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.dock-btn {
+    background: transparent;
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 6px;
+    flex: 1;
+    outline: none;
+    transition: opacity 0.15s ease;
+}
+
+.dock-btn:active {
+    opacity: 0.7;
+}
+
+.dock-btn i {
+    font-size: 19px;
+}
+
+.dock-btn span {
+    font-family: var(--font-montserrat);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================
+   4. POPUP BOTTOM SHEETS (EXACT JEMPUT.LA DESIGN)
+   ========================================================== */
+.popup-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.popup-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+
+.popup-panel {
+    position: relative;
+    width: 100%;
+    max-width: var(--max-w);
+    background-color: var(--color-footer);
+    color: #FFFFFF;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.18);
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+    z-index: 10;
+    margin-bottom: 56px; /* Sits right above footer dock */
+    overflow: hidden;
+}
+
+.popup-modal.active .popup-panel {
+    transform: translateY(0);
+}
+
+.popup-header-title {
+    font-family: var(--font-montserrat);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-align: center;
+    padding-top: 18px;
+    padding-bottom: 6px;
+}
+
+.popup-body {
+    padding: 16px 22px 22px 22px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Popup: Calendar */
+.cal-title {
+    font-family: var(--font-prata);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.cal-time {
+    font-family: var(--font-prata);
+    font-size: 14px;
+    margin-bottom: 18px;
+    opacity: 0.95;
+}
+
+.cal-actions, .map-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.popup-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: var(--font-montserrat);
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.popup-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.popup-btn:active {
+    opacity: 0.8;
+}
+
+/* Popup: Contact */
+.contact-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.contact-row:last-child {
+    border-bottom: none;
+}
+
+.c-name {
+    font-family: var(--font-prata);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.c-role {
+    font-family: var(--font-prata);
+    font-style: italic;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.c-icons {
+    display: flex;
+    gap: 16px;
+}
+
+.c-icon {
+    color: #FFFFFF;
+    font-size: 20px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.c-icon:hover {
+    opacity: 0.8;
+}
+
+/* Popup: Location */
+.map-venue-title {
+    font-family: var(--font-cinzel);
+    font-size: 15px;
+    line-height: 1.35;
+    margin-bottom: 6px;
+}
+
+.map-venue-address {
+    font-family: var(--font-prata);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+    opacity: 0.95;
+}
+
+/* Popup: RSVP Form */
+.rsvp-choice-row {
+    display: flex;
+    gap: 12px;
+}
+
+.field-group {
+    margin-bottom: 12px;
+}
+
+.field-group label {
+    display: block;
+    font-family: var(--font-montserrat);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #FFFFFF;
+}
+
+.field-group .req {
+    color: #FF6B6B;
+}
+
+.input-field {
+    width: 100%;
+    background-color: #FFFFFF;
+    color: #333333;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: var(--font-montserrat);
+    font-size: 14px;
+    outline: none;
+}
+
+.textarea-field {
+    resize: vertical;
+    min-height: 70px;
+}
+
+.form-btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.btn-cancel, .btn-submit {
+    flex: 1;
+}

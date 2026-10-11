@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Walimatul Urus Nadzri & Adibah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Music -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="assets/kenny-g-forever-in-love.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="mobile-container">
+        
+        <!-- ==========================================
+             SCREEN 1: THE INVITATION CARD (HERO)
+             ========================================== -->
+        <section id="screen-hero" class="screen-page hero-page">
+            <!-- Top App Bar matching screen.png -->
+            <header class="top-nav-bar">
+                <span class="brand-monogram">NADZRI & ADIBAH</span>
+                <button class="menu-icon-btn" id="menu-toggle-btn" aria-label="Menu Navigasi">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </header>
+
+            <!-- Main Invitation Framed Card -->
+            <div class="invitation-card-wrapper">
+                <div class="invitation-card">
+                    <!-- Inner Ornamental Vintage Line Border -->
+                    <div class="ornate-inner-border"></div>
+
+                    <div class="card-content">
+                        <p class="label-md letter-tracking-wide text-primary-muted">WALIMATUL URUS</p>
+                        
+                        <div class="couple-names">
+                            <h1 class="display-lg font-serif">NADZRI</h1>
+                            <span class="ampersand-sign">&</span>
+                            <h1 class="display-lg font-serif">ADIBAH</h1>
+                        </div>
+                        
+                        <div class="hero-fine-divider"></div>
+                        
+                        <p class="label-md letter-tracking-md text-primary-muted">SABTU</p>
+                        
+                        <div class="wedding-date-row">
+                            <span class="date-digit">23</span>
+                            <span class="date-sep">|</span>
+                            <span class="date-digit">05</span>
+                            <span class="date-sep">|</span>
+                            <span class="date-digit">2026</span>
+                        </div>
+                        
+                        <div class="venue-info">
+                            <p class="body-lg bold-text text-primary">RUSCUS HALL</p>
+                            <p class="body-md text-primary-muted">Forest Valley, Cheras</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 2: MENGHITUNG HARI & UCAPAN & DOA
+             ========================================== -->
+        <section id="screen-countdown" class="screen-page content-page">
+            <div class="screen-floral-top"></div>
+
+            <div class="page-inner-content">
+                <!-- Countdown Section -->
+                <div class="section-block countdown-block">
+                    <p class="label-md center-text letter-tracking-lg margin-bottom-sm">MENGHITUNG HARI</p>
+                    
+                    <div class="timer-grid">
+                        <div class="timer-box">
+                            <span id="days" class="timer-number">124</span>
+                            <span class="timer-label">HARI</span>
+                        </div>
+                        <div class="timer-box">
+                            <span id="hours" class="timer-number">08</span>
+                            <span class="timer-label">JAM</span>
+                        </div>
+                        <div class="timer-box">
+                            <span id="minutes" class="timer-number">42</span>
+                            <span class="timer-label">MINIT</span>
+                        </div>
+                        <div class="timer-box">
+                            <span id="seconds" class="timer-number">15</span>
+                            <span class="timer-label">SAAT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botanical Gold Foil Divider matching screen.png -->
+                <div class="botanical-gold-divider">
+                    <svg viewBox="0 0 320 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 14H135M185 14H310" stroke="url(#goldGradient)" stroke-width="1.2" stroke-linecap="round"/>
+                        <circle cx="160" cy="14" r="3" fill="url(#goldGradient)"/>
+                        <path d="M145 10C150 14 150 14 155 14C150 14 150 14 145 18" stroke="url(#goldGradient)" stroke-width="1.2" stroke-linecap="round"/>
+                        <path d="M175 10C170 14 170 14 165 14C170 14 170 14 175 18" stroke="url(#goldGradient)" stroke-width="1.2" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#c19a5b" stop-opacity="0.3"/>
+                                <stop offset="50%" stop-color="#dfbe7e"/>
+                                <stop offset="100%" stop-color="#c19a5b" stop-opacity="0.3"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+
+                <!-- Wishes Section matching screen.png -->
+                <div class="section-block wishes-block">
+                    <div class="section-title-wrapper">
+                        <div class="sparkle-star-icon">✦</div>
+                        <h2 class="headline-md font-serif">Ucapan & Doa</h2>
+                    </div>
+
+                    <div class="wishes-list" id="wishes-container">
+                        <!-- Wish Card 1 -->
+                        <div class="wish-card">
+                            <p class="body-md italic-text quote-text">"Tahniah Nadzri dan Adibah! Semoga ikatan yang terbina kekal hingga ke Jannah. Selamat melayari bahtera rumah tangga."</p>
+                            <div class="wish-author-row">
+                                <div class="avatar-badge">AS</div>
+                                <span class="label-md bold-text author-name">AHMAD SALMAN</span>
+                            </div>
+                        </div>
+
+                        <!-- Wish Card 2 -->
+                        <div class="wish-card">
+                            <p class="body-md italic-text quote-text">"Selamat Pengantin Baru. Semoga bahagia selalu buat kedua mempelai!"</p>
+                            <div class="wish-author-row">
+                                <div class="avatar-badge">NF</div>
+                                <span class="label-md bold-text author-name">NURUL FARHANA</span>
+                            </div>
+                        </div>
+
+                        <!-- Wish Card 3 -->
+                        <div class="wish-card">
+                            <p class="body-md italic-text quote-text">"Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fil khair."</p>
+                            <div class="wish-author-row">
+                                <div class="avatar-badge">MI</div>
+                                <span class="label-md bold-text author-name">MOHD IKHWAN</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Wish Trigger Button -->
+                    <button type="button" class="btn btn-secondary full-width margin-top-md" id="btn-trigger-wish-modal">
+                        <i class="fa-solid fa-feather-pointed"></i> TITIPKAN UCAPAN
+                    </button>
+                </div>
+            </div>
+
+            <div class="screen-floral-bottom"></div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 3: LOKASI MAJLIS
+             ========================================== -->
+        <section id="screen-location" class="screen-page content-page">
+            <div class="screen-floral-top"></div>
+
+            <div class="page-inner-content">
+                <div class="section-block location-block">
+                    <div class="location-header">
+                        <i class="fa-solid fa-location-dot location-pin"></i>
+                        <h2 class="headline-md font-serif">Lokasi Majlis</h2>
+                        <p class="body-md text-primary-muted">Ruscus Hall, Forest Valley</p>
+                    </div>
+
+                    <!-- Map Card matching screen.png -->
+                    <div class="map-card-container">
+                        <iframe 
+                            src="https://maps.google.com/maps?q=Ruscus+Hall+Forest+Valley+Cheras&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                            width="100%" 
+                            height="240" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Peta Lokasi Ruscus Hall">
+                        </iframe>
+                    </div>
+
+                    <!-- Map Navigation Buttons -->
+                    <div class="map-buttons-row">
+                        <a href="https://www.google.com/maps/search/Ruscus+Hall+Forest+Valley+Cheras" target="_blank" rel="noopener noreferrer" class="btn btn-secondary map-action-btn">
+                            <i class="fa-solid fa-map-pin"></i> GOOGLE MAPS
+                        </a>
+                        <a href="https://waze.com/ul?q=Ruscus+Hall+Forest+Valley+Cheras" target="_blank" rel="noopener noreferrer" class="btn btn-secondary map-action-btn">
+                            <i class="fa-brands fa-waze"></i> WAZE
+                        </a>
+                    </div>
+
+                    <!-- Quick RSVP Actions matching screen.png Screen 3 -->
+                    <div class="quick-rsvp-group">
+                        <button type="button" class="btn btn-primary full-width" id="btn-location-hadir">HADIR</button>
+                        <button type="button" class="btn btn-ghost full-width" id="btn-location-tidak">TIDAK HADIR</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen-floral-bottom"></div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 4: KEHADIRAN & HUBUNGI KELUARGA + FOOTER
+             ========================================== -->
+        <section id="screen-rsvp" class="screen-page content-page">
+            <div class="screen-floral-top"></div>
+
+            <div class="page-inner-content">
+                <!-- Kehadiran & Hubungi Header -->
+                <div class="section-block rsvp-header-block">
+                    <h2 class="headline-md font-serif">Kehadiran & Hubungi</h2>
+                    <p class="body-md text-primary-muted center-text">Sila maklumkan kehadiran anda sebelum 15 Mei 2026</p>
+
+                    <!-- Hadir / Tidak Hadir Buttons -->
+                    <div class="rsvp-choice-buttons">
+                        <button type="button" class="btn btn-primary full-width" id="btn-rsvp-open-hadir">HADIR</button>
+                        <button type="button" class="btn btn-ghost full-width" id="btn-rsvp-open-tidak">TIDAK HADIR</button>
+                    </div>
+                </div>
+
+                <!-- Hubungi Keluarga Section matching screen.png Screen 4 -->
+                <div class="section-block family-block">
+                    <p class="label-md center-text letter-tracking-lg margin-bottom-md">HUBUNGI KELUARGA</p>
+
+                    <div class="family-cards-list">
+                        <!-- Contact 1: Bapa -->
+                        <div class="family-card">
+                            <div class="family-info">
+                                <p class="family-role-name">BAPA (EN. ZAINAL)</p>
+                                <p class="family-phone-number">012-345 6789</p>
+                            </div>
+                            <div class="family-action-buttons">
+                                <a href="tel:0123456789" class="icon-circle-btn" aria-label="Telefon Bapa">
+                                    <i class="fa-solid fa-phone"></i>
+                                </a>
+                                <a href="https://wa.me/60123456789" target="_blank" rel="noopener noreferrer" class="icon-circle-btn whatsapp-btn" aria-label="WhatsApp Bapa">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Contact 2: Ibu -->
+                        <div class="family-card">
+                            <div class="family-info">
+                                <p class="family-role-name">IBU (PN. ROSMAH)</p>
+                                <p class="family-phone-number">013-987 6543</p>
+                            </div>
+                            <div class="family-action-buttons">
+                                <a href="tel:0139876543" class="icon-circle-btn" aria-label="Telefon Ibu">
+                                    <i class="fa-solid fa-phone"></i>
+                                </a>
+                                <a href="https://wa.me/60139876543" target="_blank" rel="noopener noreferrer" class="icon-circle-btn whatsapp-btn" aria-label="WhatsApp Ibu">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Contact 3: Adik -->
+                        <div class="family-card">
+                            <div class="family-info">
+                                <p class="family-role-name">ADIK (AZLAN)</p>
+                                <p class="family-phone-number">019-222 3344</p>
+                            </div>
+                            <div class="family-action-buttons">
+                                <a href="tel:0192223344" class="icon-circle-btn" aria-label="Telefon Adik">
+                                    <i class="fa-solid fa-phone"></i>
+                                </a>
+                                <a href="https://wa.me/60192223344" target="_blank" rel="noopener noreferrer" class="icon-circle-btn whatsapp-btn" aria-label="WhatsApp Adik">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deep Navy Site Footer Card matching screen.png Screen 4 -->
+                <footer class="site-royal-footer-card">
+                    <div class="footer-card-content">
+                        <h2 class="footer-monogram font-serif">N & A</h2>
+                        <p class="footer-tagline">SELAMAT PENGANTIN BARU</p>
+                    </div>
+                </footer>
+            </div>
+        </section>
+
+        <!-- Spacer for fixed bottom bar -->
+        <div class="bottom-nav-spacer"></div>
+
+        <!-- ==========================================
+             BOTTOM NAVIGATION BAR matching screen.png
+             ========================================== -->
+        <nav class="bottom-nav" id="main-bottom-nav">
+            <button type="button" class="nav-item" id="nav-btn-music">
+                <i class="fa-solid fa-music nav-icon" id="music-icon-indicator"></i>
+                <span class="nav-label">MUZIK</span>
+            </button>
+            <button type="button" class="nav-item" id="nav-btn-calendar">
+                <i class="fa-regular fa-calendar nav-icon"></i>
+                <span class="nav-label">KALENDAR</span>
+            </button>
+            <button type="button" class="nav-item" id="nav-btn-location">
+                <i class="fa-solid fa-location-dot nav-icon"></i>
+                <span class="nav-label">LOKASI</span>
+            </button>
+            <button type="button" class="nav-item" id="nav-btn-contacts">
+                <i class="fa-solid fa-phone nav-icon"></i>
+                <span class="nav-label">HUBUNGI</span>
+            </button>
+            <button type="button" class="nav-item" id="nav-btn-rsvp">
+                <i class="fa-regular fa-envelope nav-icon"></i>
+                <span class="nav-label">RSVP</span>
+            </button>
+        </nav>
+
+        <!-- ==========================================
+             INTERACTIVE MODALS & DRAWERS
+             ========================================== -->
+
+        <!-- 1. RSVP Submission Modal -->
+        <div id="rsvp-modal" class="modal-overlay" aria-hidden="true">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3 class="headline-md font-serif">Borang Kehadiran</h3>
+                    <button type="button" class="modal-close-btn" id="rsvp-modal-close" aria-label="Tutup">&times;</button>
+                </div>
+                <form id="rsvp-submission-form" class="modal-form">
+                    <div class="form-group">
+                        <label class="label-md">Status Kehadiran</label>
+                        <div class="status-toggle-row">
+                            <button type="button" class="toggle-option-btn active" id="modal-tab-hadir" data-status="HADIR">Hadir</button>
+                            <button type="button" class="toggle-option-btn" id="modal-tab-tidak" data-status="TIDAK HADIR">Tidak Hadir</button>
+                        </div>
+                    </div>
+
+                    <div id="pax-group" class="form-group">
+                        <label for="pax-select" class="label-md">Jumlah Kehadiran</label>
+                        <select id="pax-select" class="form-input">
+                            <option value="1">1 Orang</option>
+                            <option value="2" selected>2 Orang</option>
+                            <option value="3">3 Orang</option>
+                            <option value="4">4 Orang</option>
+                            <option value="5">5 Orang</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guest-name" class="label-md">Nama Anda</label>
+                        <input type="text" id="guest-name" class="form-input" placeholder="Masukkan nama penuh" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guest-phone" class="label-md">Nombor Telefon (Pilihan)</label>
+                        <input type="tel" id="guest-phone" class="form-input" placeholder="Contoh: 0123456789">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guest-wish" class="label-md">Ucapan & Doa</label>
+                        <textarea id="guest-wish" class="form-input form-textarea" rows="3" placeholder="Titipkan ucapan buat kedua mempelai..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary full-width" id="rsvp-submit-btn">HANTAR JAWAPAN</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 2. Add Wish Modal -->
+        <div id="wish-modal" class="modal-overlay" aria-hidden="true">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3 class="headline-md font-serif">Titipkan Ucapan</h3>
+                    <button type="button" class="modal-close-btn" id="wish-modal-close" aria-label="Tutup">&times;</button>
+                </div>
+                <form id="standalone-wish-form" class="modal-form">
+                    <div class="form-group">
+                        <label for="wish-author-name" class="label-md">Nama Anda</label>
+                        <input type="text" id="wish-author-name" class="form-input" placeholder="Masukkan nama anda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="wish-author-text" class="label-md">Ucapan Buat Mempelai</label>
+                        <textarea id="wish-author-text" class="form-input form-textarea" rows="4" placeholder="Tuliskan ucapan tahniah & doa anda..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">HANTAR UCAPAN</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 3. Calendar Export Modal -->
+        <div id="calendar-modal" class="modal-overlay" aria-hidden="true">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3 class="headline-md font-serif">Simpan Tarikh</h3>
+                    <button type="button" class="modal-close-btn" id="calendar-modal-close" aria-label="Tutup">&times;</button>
+                </div>
+                <div class="calendar-options-list">
+                    <a id="btn-add-google-cal" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary full-width margin-bottom-sm">
+                        <i class="fa-brands fa-google"></i> Google Calendar
+                    </a>
+                    <button type="button" id="btn-download-ics" class="btn btn-secondary full-width">
+                        <i class="fa-solid fa-calendar-arrow-down"></i> Muat Turun (.ICS)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Navigation Menu Drawer -->
+        <div id="nav-drawer" class="drawer-overlay" aria-hidden="true">
+            <div class="drawer-panel">
+                <div class="drawer-header">
+                    <span class="brand-monogram">NADZRI & ADIBAH</span>
+                    <button type="button" class="drawer-close-btn" id="nav-drawer-close" aria-label="Tutup Menu">&times;</button>
+                </div>
+                <ul class="drawer-menu-list">
+                    <li><a href="#screen-hero" class="drawer-link"><i class="fa-solid fa-heart"></i> Jemputan</a></li>
+                    <li><a href="#screen-countdown" class="drawer-link"><i class="fa-regular fa-clock"></i> Menghitung Hari</a></li>
+                    <li><a href="#screen-countdown" class="drawer-link"><i class="fa-solid fa-sparkles"></i> Ucapan & Doa</a></li>
+                    <li><a href="#screen-location" class="drawer-link"><i class="fa-solid fa-location-dot"></i> Lokasi Majlis</a></li>
+                    <li><a href="#screen-rsvp" class="drawer-link"><i class="fa-regular fa-envelope"></i> Kehadiran & Hubungi</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 5. Initial Audio Unlock Overlay -->
+        <div id="audio-overlay" class="audio-overlay">
+            <div class="audio-overlay-card">
+                <div class="envelope-stamp"><i class="fa-solid fa-envelope-open-text"></i></div>
+                <p class="label-md letter-tracking-lg margin-bottom-xs">WALIMATUL URUS</p>
+                <h2 class="display-sm font-serif">Nadzri & Adibah</h2>
+                <p class="body-sm text-primary-muted margin-bottom-lg">Sabtu, 23 Mei 2026</p>
+                <button type="button" class="btn btn-primary" id="open-invite">
+                    <i class="fa-solid fa-music"></i> BUKA JEMPUTAN
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
