@@ -238,9 +238,14 @@ document.addEventListener('DOMContentLoaded', () => {
             savedResponses.push(responseData);
             localStorage.setItem('wedding_rsvps', JSON.stringify(savedResponses));
 
-            // If guest left a wish, append it to Ucapan & Doa list!
-            if (wish) {
+            // If guest left a wish, append it to Ucapan & Doa list and persist it!
+            if (wish && wish !== '-') {
                 appendWishCard(name, wish);
+
+                // Save to localStorage so it stays upon refresh
+                const userWishes = JSON.parse(localStorage.getItem('wedding_custom_wishes') || '[]');
+                userWishes.unshift({ author: name, text: wish });
+                localStorage.setItem('wedding_custom_wishes', JSON.stringify(userWishes));
             }
 
             closeRsvpModal();
@@ -269,7 +274,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const renderedWishes = new Set();
+
     const appendWishCard = (name, text) => {
+        if (!name || !text || text === '-') return;
+        const key = `${name.trim().toLowerCase()}:::${text.trim().toLowerCase()}`;
+        if (renderedWishes.has(key)) return;
+        renderedWishes.add(key);
+
         const initials = name
             .split(' ')
             .filter(Boolean)
@@ -287,7 +299,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="label-md bold-text author-name">${escapeHtml(name.toUpperCase())}</span>
             </div>
         `;
-        wishesContainer.prepend(wishCard);
+        if (wishesContainer) {
+            wishesContainer.prepend(wishCard);
+        }
     };
 
     const escapeHtml = (str) => {
@@ -344,9 +358,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load custom wishes from localStorage on boot
     const storedWishes = JSON.parse(localStorage.getItem('wedding_custom_wishes') || '[]');
-    storedWishes.forEach(item => {
+    storedWishes.slice().reverse().forEach(item => {
         appendWishCard(item.author, item.text);
     });
+
+    // Also fetch all wishes from Google Sheet so all guests see each other's wishes!
+    const syncWishesFromGoogleSheet = () => {
+        if (!GOOGLE_SHEET_RSVP_URL) return;
+        fetch(GOOGLE_SHEET_RSVP_URL)
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    data.forEach(item => {
+                        if (item.author && item.text) {
+                            appendWishCard(item.author, item.text);
+                        }
+                    });
+                }
+            })
+            .catch(err => {
+                // Ignore if not JSON yet
+            });
+    };
+
+    syncWishesFromGoogleSheet();
 
     // ==========================================
     // 7. Calendar Export (Google & .ICS)
