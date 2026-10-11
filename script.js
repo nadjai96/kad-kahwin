@@ -2,8 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 0. Google Sheets RSVP Integration
     // ==========================================
-    // Paste your Google Apps Script Web App URL below to automatically collect RSVPs in Google Sheets/Excel:
-    const GOOGLE_SHEET_RSVP_URL = "";
+    const GOOGLE_SHEET_RSVP_URL = "https://script.google.com/macros/s/AKfycbxahCaQsqqUY9xKv435giPmvo-k6MHWxiZqZxv3rvkBGPUlsDOYhTT-4Wsqr0MLBPl9gw/exec";
 
     // ==========================================
     // 1. Audio Control & Initial Welcome Overlay
