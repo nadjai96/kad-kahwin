@@ -26,8 +26,8 @@
     
     /* Section 1.5: Jemputan */
     --s15-min-height: 927px;
-    --s15-padding-top: 165px;
-    --s15-padding-bottom: 140px;
+    --s15-padding-top: 130px;
+    --s15-padding-bottom: 110px;
     --s15-bg-scale-x: 100%;
     --s15-bg-scale-y: 100%;
     --s15-bg-pos-x: center;
@@ -427,14 +427,14 @@ body {
 /* Section 1.5: Invitation Greetings & Details on section 3's floral background */
 #screen-invitation-details {
     width: 100%;
-    min-height: var(--s15-min-height, 1022px);
+    min-height: var(--s15-min-height, 927px);
     background-color: var(--surface);
     background-image: url('assets/bg_screen3_location.png');
     background-size: var(--s15-bg-scale-x, 100%) var(--s15-bg-scale-y, 100%);
     background-position: var(--s15-bg-pos-x, center) var(--s15-bg-pos-y, 0px);
     background-repeat: no-repeat;
     position: relative;
-    padding: var(--s15-padding-top, 165px) 22px var(--s15-padding-bottom, 140px);
+    padding: var(--s15-padding-top, 130px) 22px var(--s15-padding-bottom, 110px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -446,7 +446,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
     width: 100%;
 }
 
@@ -472,27 +472,37 @@ body {
     width: 45px;
     height: 1px;
     background: rgba(0, 17, 58, 0.2);
-    margin: 4px auto;
+    margin: 2px auto;
 }
 
 .parents-block {
-    margin: 2px 0;
+    margin: 1px 0;
 }
 
 .parent-name {
-    font-size: 1.05rem;
+    font-size: 1.02rem;
     font-weight: 600;
     color: var(--primary);
     line-height: 1.25;
 }
 
+.parent-late {
+    font-size: clamp(0.72rem, 2.7vw, 0.82rem);
+    font-style: italic;
+    color: var(--primary);
+    opacity: 0.85;
+    line-height: 1.25;
+    margin-top: 2px;
+    letter-spacing: 0.01em;
+}
+
 .parent-amp {
     display: block;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-style: italic;
     color: var(--primary);
     opacity: 0.8;
-    margin: 2px 0;
+    margin: 1px 0;
 }
 
 .invitation-body-block {
@@ -535,10 +545,10 @@ body {
 }
 
 .event-meta-block {
-    margin-top: 6px;
+    margin-top: 4px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     width: 100%;
 }
 
